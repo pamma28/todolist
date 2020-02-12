@@ -9,6 +9,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
 
 @NgModule({
   declarations: [
@@ -17,12 +19,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     AddTodoComponent,
     NavbarComponent,
     NotFoundComponent,
+    ProgressTodoComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
