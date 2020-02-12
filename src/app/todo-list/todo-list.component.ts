@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { StaticServices } from './../static-data.service';
+import { InstanceTodo } from './../static-data.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -8,26 +10,19 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 })
 export class TodoListComponent implements OnInit {
   user = [];
-  todos = [
-    {
-      id: 1,
-      description: 'asdsahdasjdhsajd',
-      deadline: new Date(),
-      done: false,
-    },
-    {
-      id: 2,
-      description: 'klfhkhsdkjfhsdjkf',
-      deadline: new Date(),
-      done: true,
-    },
-  ];
+  todos: any;
 
-  constructor(private router: Router, private activeRoute: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private activeRoute: ActivatedRoute,
+    private staticServices: StaticServices,
+  ) {}
+
   ngOnInit() {
-    // this.activeRoute.params.subscribe((data: Params) => {
-    //   this.user.push({ name: data['name'], level: data['level'] });
-    // });
+    this.staticServices.getData().subscribe(responseData => {
+      console.log(responseData);
+      this.todos = responseData;
+    });
   }
 
   onAddTodo() {
