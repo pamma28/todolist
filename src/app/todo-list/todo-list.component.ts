@@ -16,6 +16,10 @@ export class TodoListComponent implements OnInit {
   faTrash = faTrash;
   totalDone: number;
   totalNotDone: number;
+  notification: {
+    type: string;
+    message: string;
+  };
 
   constructor(
     private router: Router,
@@ -39,15 +43,34 @@ export class TodoListComponent implements OnInit {
         }),
       )
       .subscribe(responseData => {
-        console.log(responseData);
         this.todos = responseData;
       });
-
-    // this.totalDone = 10;
-    // this.totalNotDone = 22;
   }
 
   onAddTodo() {
     this.router.navigate(['add']);
   }
+
+  onConfirmDelete(todo: InstanceTodo) {
+    if (confirm(`Do you really want to delete "${todo.description}"?`)) {
+      this.staticServices.deleteData(todo.id).subscribe(
+        data => {
+          this.notification = {
+            type: 'success',
+            message: 'Todos selected has gone',
+          };
+          this.ngOnInit();
+        },
+        errorMessage => {
+          this.notification = {
+            type: 'failed',
+            message: errorMessage.message,
+          };
+        },
+      );
+    } else {
+      this.ngOnInit();
+    }
+  }
+
 }

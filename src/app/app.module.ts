@@ -11,6 +11,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
+import { AlertNotifComponent } from './alert-notif/alert-notif.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
     NavbarComponent,
     NotFoundComponent,
     ProgressTodoComponent,
+    AlertNotifComponent,
   ],
   imports: [
     BrowserModule,

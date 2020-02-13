@@ -11,6 +11,10 @@ import * as moment from 'moment';
 export class AddTodoComponent implements OnInit {
   constructor(private staticServices: StaticServices) {}
   newTodos: FormGroup;
+  notification: {
+    type: string;
+    message: string;
+  };
 
   ngOnInit() {
     this.newTodos = new FormGroup({
@@ -24,7 +28,6 @@ export class AddTodoComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.newTodos.value);
     const dt = this.newTodos.value;
     this.staticServices
       .postData({
@@ -32,13 +35,28 @@ export class AddTodoComponent implements OnInit {
         deadline: moment(dt.deadline).toDate(),
         done: dt.done,
       })
-      .subscribe(responseData => {
-        console.log(responseData);
-      });
+      .subscribe(
+        responseData => {
+          this.notification = {
+            type: 'success',
+            message: 'Todos been saved',
+          };
+          this.newTodos.reset();
+        },
+        errorMessage => {
+          this.notification = {
+            type: 'failed',
+            message: errorMessage.message,
+          };
+        },
+      );
   }
 
   allowedDates(control: FormControl): { [s: string]: boolean } {
-    if (!moment(control.value).isAfter(moment().startOf('day'))) {
+    if (
+      !moment(control.value).isAfter(moment().startOf('day')) ||
+      !moment(control.value, 'YYYY-MM-DD', true).isValid()
+    ) {
       return { allowedDates: true };
     }
     return null;

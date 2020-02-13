@@ -1,3 +1,4 @@
+<app-alert-notif [notification]="notification"></app-alert-notif>
 <app-progress-todo
   [totalDone]="totalDone"
   [totalNotDone]="totalNotDone"
@@ -7,16 +8,12 @@
 </button>
 <!-- <h5 class="text-center">You can do these all</h5> -->
 <div class="list-group">
-  <a
-    *ngFor="let todo of todos"
-    routerLink="/todo"
-    class="list-group-item list-group-item-action"
-  >
+  <a *ngFor="let todo of todos" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"></h5>
       <small class="text-justify">{{ todo.deadline | date }}</small>
       <div
-        class="badge  text-wrap text-left"
+        class="badge text-wrap text-left"
         [ngClass]="todo.done ? 'badge-success' : 'badge-warning'"
       >
         {{ todo.done ? 'Done' : 'Not Done' }}
@@ -26,7 +23,13 @@
     <p class="mb-1">{{ todo.description }}</p>
 
     <div class="text-right">
-      <div class="badge badge-danger"><fa-icon [icon]="faTrash"></fa-icon></div>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        (click)="onConfirmDelete(todo)"
+      >
+        <fa-icon [icon]="faTrash"></fa-icon>
+      </button>
     </div>
   </a>
 </div>
