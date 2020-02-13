@@ -3,7 +3,7 @@
   [totalDone]="totalDone"
   [totalNotDone]="totalNotDone"
 ></app-progress-todo>
-<button class="btn  btn-primary btn-lg btn-block" (click)="onAddTodo()">
+<button class="btn btn-primary btn-lg btn-block" (click)="onAddTodo()">
   Add more todos
 </button>
 <div class="text-right">
@@ -18,7 +18,7 @@
   <a *ngFor="let todo of todos" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"></h5>
-      <small class="text-justify">{{ todo.deadline | date }}</small>
+      <small class="text-center">{{ todo.deadline | date }}</small>
       <div
         class="badge text-wrap text-left"
         [ngClass]="todo.done ? 'badge-success' : 'badge-warning'"
@@ -26,7 +26,10 @@
         {{ todo.done ? 'Done' : 'Not Done' }}
       </div>
     </div>
-    <p class="mb-1">{{ todo.description }}</p>
+    <p class="mb-1" *ngIf="!todo.done">{{ todo.description }}</p>
+    <p class="mb-1">
+      <del *ngIf="todo.done">{{ todo.description }}</del>
+    </p>
 
     <div class="text-right">
       <div class="btn-group" role="group" aria-label="Edit Delete Group">
