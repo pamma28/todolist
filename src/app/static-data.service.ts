@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subscription, Observable } from 'rxjs';
 export interface InstanceTodo {
   id?: string;
   description?: string;
@@ -14,7 +15,7 @@ export class StaticServices {
   constructor(private http: HttpClient) {}
 
   getData() {
-    return this.http.get(this.urlApi);
+    return this.http.get<InstanceTodo[]>(this.urlApi);
   }
 
   postData(data: InstanceTodo) {

@@ -6,8 +6,8 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./progress-todo.component.css'],
 })
 export class ProgressTodoComponent implements OnInit {
-  @Input('totalDone') done: number;
-  @Input('totalNotDone') notDone: number;
+  @Input() totalDone: number;
+  @Input() totalNotDone: number;
   constructor() {}
 
   ngOnInit() {}

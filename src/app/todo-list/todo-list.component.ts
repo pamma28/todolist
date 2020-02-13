@@ -30,7 +30,7 @@ export class TodoListComponent implements OnInit {
         map(data => {
           let finish = 0;
           let unfinish = 0;
-          for (let dt of data) {
+          for (const dt of data) {
             dt.done ? finish++ : unfinish++;
           }
           this.totalDone = finish;
