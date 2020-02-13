@@ -7,6 +7,11 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
+import { AlertNotifComponent } from './alert-notif/alert-notif.component';
 
 @NgModule({
   declarations: [
@@ -14,13 +19,18 @@ import { NotFoundComponent } from './not-found/not-found.component';
     TodoListComponent,
     AddTodoComponent,
     NavbarComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    ProgressTodoComponent,
+    AlertNotifComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
