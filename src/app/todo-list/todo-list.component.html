@@ -6,7 +6,14 @@
 <button class="btn  btn-primary btn-lg btn-block" (click)="onAddTodo()">
   Add more todos
 </button>
-<!-- <h5 class="text-center">You can do these all</h5> -->
+<div class="text-right">
+  <p (click)="onChangeSortData()">
+    Sort Deadline
+    <fa-icon
+      [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
+    ></fa-icon>
+  </p>
+</div>
 <div class="list-group">
   <a *ngFor="let todo of todos" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">

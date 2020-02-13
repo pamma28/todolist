@@ -2,8 +2,13 @@ import { Component, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { StaticServices } from './../static-data.service';
 import { InstanceTodo } from './../static-data.service';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrash,
+  faSortAmountDown,
+  faSortAmountUp,
+} from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-todo-list',
@@ -14,12 +19,15 @@ export class TodoListComponent implements OnInit {
   user = [];
   todos: any;
   faTrash = faTrash;
+  faSortAmountDown = faSortAmountDown;
+  faSortAmountUp = faSortAmountUp;
   totalDone: number;
   totalNotDone: number;
   notification: {
     type: string;
     message: string;
   };
+  sortDeadline = false;
 
   constructor(
     private router: Router,
@@ -39,6 +47,23 @@ export class TodoListComponent implements OnInit {
           }
           this.totalDone = finish;
           this.totalNotDone = unfinish;
+          if (this.sortDeadline) {
+            data.sort((a, b) =>
+              moment(a.deadline).isSameOrAfter(moment(b.deadline))
+                ? 1
+                : moment(b.deadline).isSameOrAfter(moment(a.deadline))
+                ? -1
+                : 0,
+            );
+          } else {
+            data.sort((a, b) =>
+              moment(a.deadline).isSameOrBefore(moment(b.deadline))
+                ? 1
+                : moment(b.deadline).isSameOrBefore(moment(a.deadline))
+                ? -1
+                : 0,
+            );
+          }
           return data;
         }),
       )
@@ -73,4 +98,8 @@ export class TodoListComponent implements OnInit {
     }
   }
 
+  onChangeSortData() {
+    this.ngOnInit();
+    this.sortDeadline = !this.sortDeadline;
+  }
 }
