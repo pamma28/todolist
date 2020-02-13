@@ -8,7 +8,7 @@
 </button>
 <div class="text-right">
   <p (click)="onChangeSortData()">
-    Sort Deadline
+    Sort by Deadline
     <fa-icon
       [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
     ></fa-icon>
@@ -24,13 +24,24 @@
         [ngClass]="todo.done ? 'badge-success' : 'badge-warning'"
       >
         {{ todo.done ? 'Done' : 'Not Done' }}
-        <!-- <fa-icon [icon]="todo.done ? faCheck : faTimes"> </fa-icon> -->
       </div>
     </div>
     <p class="mb-1">{{ todo.description }}</p>
 
     <div class="text-right">
       <div class="btn-group" role="group" aria-label="Edit Delete Group">
+        <!-- <div class="input-group"> -->
+        <div class="input-group-prepend ">
+          <div class="input-group-text">
+            <input
+              type="checkbox"
+              aria-label="Checkbox Done Not Done"
+              [checked]="todo.done"
+              (click)="onSwitchDone(todo)"
+            />
+          </div>
+        </div>
+        <!-- </div> -->
         <button
           type="button"
           class="btn btn-outline-primary btn-sm"

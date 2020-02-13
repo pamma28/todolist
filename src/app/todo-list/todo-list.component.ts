@@ -109,4 +109,11 @@ export class TodoListComponent implements OnInit {
     history.pushState({ data: todo }, '', '');
     this.router.navigate([`/edit`], { state: { todo } });
   }
+
+  onSwitchDone(todo: InstanceTodo) {
+    todo.done = !todo.done;
+    this.staticServices.updateData(todo).subscribe(data => {
+      this.ngOnInit();
+    });
+  }
 }
