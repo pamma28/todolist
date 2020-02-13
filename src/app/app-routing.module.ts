@@ -7,12 +7,13 @@ import { NotFoundComponent } from './not-found/not-found.component';
 const routes: Routes = [
   { path: '', component: TodoListComponent },
   { path: 'add', component: AddTodoComponent },
+  { path: 'edit', component: AddTodoComponent },
   { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '404' }
+  { path: '**', redirectTo: '404' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

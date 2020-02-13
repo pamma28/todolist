@@ -1,11 +1,19 @@
 <ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" routerLink="/">Home</a>
-    </li>
-    <!-- <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/list">Todo Progress</a>
-    </li> -->
-    <li class="nav-item">
-        <a class="nav-link" routerLinkActive="active" routerLink="/add">Add Todo</a>
-    </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLink="/"
+      >Home</a
+    >
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
+      >Edit Todo</a
+    >
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" routerLinkActive="active" routerLink="/add">Add Todo</a>
+  </li>
 </ul>

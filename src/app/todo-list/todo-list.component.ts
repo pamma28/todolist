@@ -6,6 +6,7 @@ import {
   faTrash,
   faSortAmountDown,
   faSortAmountUp,
+  faEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 import * as moment from 'moment';
@@ -17,10 +18,11 @@ import * as moment from 'moment';
 })
 export class TodoListComponent implements OnInit {
   user = [];
-  todos: any;
+  todos: InstanceTodo[];
   faTrash = faTrash;
   faSortAmountDown = faSortAmountDown;
   faSortAmountUp = faSortAmountUp;
+  faEdit = faEdit;
   totalDone: number;
   totalNotDone: number;
   notification: {
@@ -47,7 +49,7 @@ export class TodoListComponent implements OnInit {
           }
           this.totalDone = finish;
           this.totalNotDone = unfinish;
-          if (this.sortDeadline) {
+          if (!this.sortDeadline) {
             data.sort((a, b) =>
               moment(a.deadline).isSameOrAfter(moment(b.deadline))
                 ? 1
@@ -101,5 +103,10 @@ export class TodoListComponent implements OnInit {
   onChangeSortData() {
     this.ngOnInit();
     this.sortDeadline = !this.sortDeadline;
+  }
+
+  onEditData(todo: InstanceTodo) {
+    history.pushState({ data: todo }, '', '');
+    this.router.navigate([`/edit`], { state: { todo } });
   }
 }

@@ -30,13 +30,22 @@
     <p class="mb-1">{{ todo.description }}</p>
 
     <div class="text-right">
-      <button
-        type="button"
-        class="btn btn-danger btn-sm"
-        (click)="onConfirmDelete(todo)"
-      >
-        <fa-icon [icon]="faTrash"></fa-icon>
-      </button>
+      <div class="btn-group" role="group" aria-label="Edit Delete Group">
+        <button
+          type="button"
+          class="btn btn-outline-primary btn-sm"
+          (click)="onEditData(todo)"
+        >
+          <fa-icon [icon]="faEdit"></fa-icon>
+        </button>
+        <button
+          type="button"
+          class="btn btn-outline-danger btn-sm"
+          (click)="onConfirmDelete(todo)"
+        >
+          <fa-icon [icon]="faTrash"></fa-icon>
+        </button>
+      </div>
     </div>
   </a>
 </div>
