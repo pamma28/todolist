@@ -1,19 +1,14 @@
-<ul class="nav nav-pills nav-fill">
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      routerLink="/"
-      >Home</a
-    >
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
-      >Edit Todo</a
-    >
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLinkActive="active" routerLink="/add">Add Todo</a>
-  </li>
-</ul>
+<mat-menu #rootMenu="matMenu">
+  <a
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    routerLink="/"
+    >Home</a
+  >
+</mat-menu>
+<mat-menu>
+  <a class="disabled" routerLinkActive="active" routerLink="/edit">Edit Todo</a>
+</mat-menu>
+<mat-menu>
+  <a routerLinkActive="active" routerLink="/add">Add Todo</a>
+</mat-menu>

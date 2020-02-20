@@ -3,17 +3,17 @@
   [totalDone]="totalDone"
   [totalNotDone]="totalNotDone"
 ></app-progress-todo>
-<button mat-button (click)="onAddTodo()">
+<button mat-raised-button color="accent" (click)="onAddTodo()">
   Add more todos
 </button>
-<div class="text-right">
+<mat-grid-list cols="4">
   <p (click)="onChangeSortData()">
     Sort by Deadline
     <fa-icon
       [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
     ></fa-icon>
   </p>
-</div>
+</mat-grid-list>
 <div class="list-group">
   <a *ngFor="let todo of todos" class="list-group-item list-group-item-action">
     <div class="d-flex w-100 justify-content-between">
@@ -45,10 +45,10 @@
           </div>
         </div>
         <!-- </div> -->
-        <button type="button" mat-button (click)="onEditData(todo)">
+        <button mat-button (click)="onEditData(todo)">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
-        <button type="button" mat-button (click)="onConfirmDelete(todo)">
+        <button mat-button (click)="onConfirmDelete(todo)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </div>
