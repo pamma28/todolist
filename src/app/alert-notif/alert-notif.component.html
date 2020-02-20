@@ -5,8 +5,7 @@
   [ngClass]="notification.type == 'success' ? 'alert-success' : 'alert-danger'"
 >
   <strong>{{ notification.type }}</strong> {{ notification.message }}
-  <button
-    type="button"
+  <button mat-button
     class="close"
     data-dismiss="alert"
     aria-label="Close"

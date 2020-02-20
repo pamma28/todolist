@@ -3,7 +3,7 @@
   [totalDone]="totalDone"
   [totalNotDone]="totalNotDone"
 ></app-progress-todo>
-<button class="btn btn-primary btn-lg btn-block" (click)="onAddTodo()">
+<button mat-button (click)="onAddTodo()">
   Add more todos
 </button>
 <div class="text-right">
@@ -45,18 +45,10 @@
           </div>
         </div>
         <!-- </div> -->
-        <button
-          type="button"
-          class="btn btn-outline-primary btn-sm"
-          (click)="onEditData(todo)"
-        >
+        <button type="button" mat-button (click)="onEditData(todo)">
           <fa-icon [icon]="faEdit"></fa-icon>
         </button>
-        <button
-          type="button"
-          class="btn btn-outline-danger btn-sm"
-          (click)="onConfirmDelete(todo)"
-        >
+        <button type="button" mat-button (click)="onConfirmDelete(todo)">
           <fa-icon [icon]="faTrash"></fa-icon>
         </button>
       </div>
