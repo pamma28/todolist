@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
 import { AlertNotifComponent } from './alert-notif/alert-notif.component';
+import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,7 @@ import { AlertNotifComponent } from './alert-notif/alert-notif.component';
     ReactiveFormsModule,
     FontAwesomeModule,
   ],
-  providers: [],
+  providers: [CanDeactivateGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

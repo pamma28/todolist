@@ -3,19 +3,22 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StaticServices } from './../services/static-data.service';
 import { InstanceTodo } from './../todo-list/todo.interface';
 import * as moment from 'moment';
+import { CanComponentDeactivate } from './can-deactivate-guard.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-todo',
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.css'],
 })
-export class AddTodoComponent implements OnInit {
+export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   constructor(private staticServices: StaticServices) {}
   newTodos: FormGroup;
   notification: {
     type: string;
     message: string;
   };
+  dataSaved = false;
 
   ngOnInit() {
     // edit logic
@@ -89,6 +92,7 @@ export class AddTodoComponent implements OnInit {
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
+            this.dataSaved = true;
           },
           errorMessage => {
             this.notification = {
@@ -108,5 +112,14 @@ export class AddTodoComponent implements OnInit {
       return { allowedDates: true };
     }
     return null;
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.newTodos.value.description || this.newTodos.value.date) {
+      if (!this.dataSaved) {
+        return confirm('Do you really want to leave form?');
+      }
+    }
+    return true;
   }
 }
