@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StaticServices } from '../static-data.service';
-import { InstanceTodo } from './../static-data.service';
+import { StaticServices } from './../services/static-data.service';
+import { InstanceTodo } from './../todo-list/todo.interface';
 import * as moment from 'moment';
 
 @Component({

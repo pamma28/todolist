@@ -1,12 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subscription, Observable } from 'rxjs';
-export interface InstanceTodo {
-  id?: string;
-  description?: string;
-  deadline?: Date;
-  done?: boolean;
-}
+import { InstanceTodo } from './../todo-list/todo.interface';
 
 @Injectable({ providedIn: 'root' })
 export class StaticServices {

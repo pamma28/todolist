@@ -1,7 +1,7 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { StaticServices } from './../static-data.service';
-import { InstanceTodo } from './../static-data.service';
+import { StaticServices } from './../services/static-data.service';
+import { InstanceTodo } from './../todo-list/todo.interface';
 import {
   faTrash,
   faSortAmountDown,
