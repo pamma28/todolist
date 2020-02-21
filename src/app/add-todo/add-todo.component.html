@@ -7,14 +7,34 @@
       formControlName="description"
       rows="3"
       class="form-control"
+      [ngClass]="
+        newTodos.get('description').invalid &&
+        newTodos.get('description').touched
+          ? 'is-invalid'
+          : ''
+      "
     ></textarea>
+    <div class="invalid-feedback">
+      No more than 100 character please.
+    </div>
   </div>
 
   <div class="form-group">
     <label for="deadline">When the finish line?</label>
-    <input type="date" formControlName="deadline" class="form-control" />
+    <input
+      type="date"
+      formControlName="deadline"
+      class="form-control"
+      [ngClass]="
+        newTodos.get('deadline').invalid && newTodos.get('deadline').touched
+          ? 'is-invalid'
+          : ''
+      "
+    />
+    <div class="invalid-feedback">
+      Valid date please.
+    </div>
   </div>
-
   <div class="form-group">
     <div class="form-check">
       <input type="checkbox" formControlName="done" class="form-check-input" />
