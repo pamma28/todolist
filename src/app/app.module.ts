@@ -13,6 +13,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
 import { AlertNotifComponent } from './alert-notif/alert-notif.component';
 import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
+import { HoverElementDirective } from './add-todo/style-directive';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
     NotFoundComponent,
     ProgressTodoComponent,
     AlertNotifComponent,
+    HoverElementDirective,
   ],
   imports: [
     BrowserModule,
