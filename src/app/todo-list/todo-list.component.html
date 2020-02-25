@@ -13,12 +13,16 @@
       [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
     ></fa-icon>
   </p>
+  <p (click)="onAnimate()">
+    <fa-icon [icon]="faEdit"></fa-icon>
+  </p>
 </div>
 <div class="list-group">
   <a
     *ngFor="let todo of todos"
     class="list-group-item list-group-item-action"
     [appHover]="todo.done"
+    [@divState]="animateState"
   >
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"></h5>
@@ -30,7 +34,8 @@
         {{ todo.done ? 'Done' : 'Not Done' }}
       </div>
     </div>
-    <p class="mb-1" *ngIf="!todo.done">{{ todo.description }}</p>
+    <p class="mb-1" *ngIf="!todo.done"
+    >{{ todo.description }}</p>
     <p class="mb-1">
       <del *ngIf="todo.done">{{ todo.description }}</del>
     </p>

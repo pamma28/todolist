@@ -14,7 +14,7 @@ import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
 import { AlertNotifComponent } from './alert-notif/alert-notif.component';
 import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 import { HoverElementDirective } from './add-todo/style-directive';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +32,7 @@ import { HoverElementDirective } from './add-todo/style-directive';
     HttpClientModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    BrowserAnimationsModule,
   ],
   providers: [CanDeactivateGuard],
   bootstrap: [AppComponent],
