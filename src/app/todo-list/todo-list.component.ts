@@ -33,6 +33,27 @@ import * as moment from 'moment';
       transition('newAdded => normal', [animate(500)]),
       // transition('zoomed <=> *', [animate(800)]),
     ]),
+    trigger('newAddedAnimation', [
+      state('in', style({ opacity: 1, transform: 'translateY(0)' })),
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateY(100px)',
+          backgroundColor: '#007bff',
+        }),
+        animate(400),
+      ]),
+      transition('* => void', [
+        animate(
+          400,
+          style({
+            opacity: 0,
+            transform: 'translateY(100px)',
+            backgroundColor: '#007bff',
+          }),
+        ),
+      ]),
+    ]),
   ],
 })
 export class TodoListComponent implements OnInit {
@@ -51,6 +72,8 @@ export class TodoListComponent implements OnInit {
   sortDeadline = false;
   newTodo = true;
   animateState = 'normal';
+  state = 'normal';
+  newId = [1, 2];
 
   constructor(
     private router: Router,
