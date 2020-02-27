@@ -60,3 +60,71 @@ describe('AddTodoComponent', () => {
     });
   });
 });
+
+describe('EditTodoComponent', () => {
+  let component: AddTodoComponent;
+  let fixture: ComponentFixture<AddTodoComponent>;
+  const formBuilder: FormBuilder = new FormBuilder();
+  beforeEach(async(() => {
+    let todoList = [];
+    window.history.pushState(
+      {
+        todo: {
+          id: 11,
+          description: 'this is description',
+          deadline: '2020-03-22',
+          done: false,
+        },
+      },
+      '',
+      '',
+    );
+
+    const staticServices = jasmine.createSpyObj('StaticServices', [
+      'updateData',
+    ]);
+    todoList = staticServices.updateData.and.returnValue(of(todoList));
+    TestBed.configureTestingModule({
+      imports: [AppModule, ReactiveFormsModule],
+      declarations: [AddTodoComponent, NavbarComponent],
+      providers: [
+        { provide: StaticServices, useValue: staticServices },
+        { provide: ReactiveFormsModule, useValue: formBuilder },
+      ],
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AddTodoComponent);
+    component = fixture.debugElement.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('form valid when no changes', () => {
+    expect(component.newTodos.valid).toBeTruthy();
+  });
+
+  it('invalid if change into past date', () => {
+    component.newTodos.setValue({
+      description: window.history.state.todo.description,
+      deadline: '2020-02-20',
+      done: window.history.state.todo.done,
+      id: window.history.state.todo.id,
+    });
+    expect(component.newTodos.get('deadline').valid).toBeFalsy();
+  });
+
+  it('valid todo update', () => {
+    component.newTodos.setValue({
+      description: window.history.state.todo.description + ' update',
+      deadline: window.history.state.todo.deadline,
+      done: window.history.state.todo.done,
+      id: window.history.state.todo.id,
+    });
+    component.onSubmit();
+    expect(component.notification).toEqual({
+      type: 'success',
+      message: 'Todos has been updated',
+    });
+  });
+});
