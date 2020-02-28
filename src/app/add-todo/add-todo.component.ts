@@ -1,21 +1,25 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { StaticServices } from '../static-data.service';
-import { InstanceTodo } from './../static-data.service';
+import { StaticServices } from './../services/static-data.service';
+import { InstanceTodo } from './../todo-list/todo.interface';
 import * as moment from 'moment';
+import { CanComponentDeactivate } from './can-deactivate-guard.interface';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-add-todo',
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.css'],
 })
-export class AddTodoComponent implements OnInit {
+export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   constructor(private staticServices: StaticServices) {}
   newTodos: FormGroup;
   notification: {
     type: string;
     message: string;
   };
+  dataSaved = false;
+  previewScreenshot: string | ArrayBuffer;
 
   ngOnInit() {
     // edit logic
@@ -32,6 +36,7 @@ export class AddTodoComponent implements OnInit {
             .format('YYYY-MM-DD'),
           [Validators.required, this.allowedDates],
         ),
+        screenshot: new FormControl(null, [], []),
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });
@@ -43,6 +48,7 @@ export class AddTodoComponent implements OnInit {
           Validators.maxLength(100),
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
+        screenshot: new FormControl(null, [], []),
         done: new FormControl(false, []),
         id: new FormControl(''),
       });
@@ -89,6 +95,7 @@ export class AddTodoComponent implements OnInit {
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
+            this.dataSaved = true;
           },
           errorMessage => {
             this.notification = {
@@ -108,5 +115,26 @@ export class AddTodoComponent implements OnInit {
       return { allowedDates: true };
     }
     return null;
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.newTodos.value.description || this.newTodos.value.date) {
+      if (!this.dataSaved) {
+        return confirm('Do you really want to leave form?');
+      }
+    }
+    return true;
+  }
+
+  onImageSelected(event: Event) {
+    const image = (event.target as HTMLInputElement).files[0];
+    this.newTodos.patchValue({ screenshot: image });
+    this.newTodos.get('screenshot').updateValueAndValidity();
+
+    const img = new FileReader();
+    img.onload = () => {
+      this.previewScreenshot = img.result;
+    };
+    img.readAsDataURL(image);
   }
 }

@@ -1,7 +1,14 @@
-import { Component, OnInit, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate,
+} from '@angular/animations';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-import { StaticServices } from './../static-data.service';
-import { InstanceTodo } from './../static-data.service';
+import { StaticServices } from './../services/static-data.service';
+import { InstanceTodo } from './../todo-list/todo.interface';
 import {
   faTrash,
   faSortAmountDown,
@@ -15,6 +22,39 @@ import * as moment from 'moment';
   selector: 'app-todo-list',
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
+  animations: [
+    trigger('divState', [
+      state('normal', style({ transform: 'translateX(0)' })),
+      state(
+        'newAdded',
+        style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
+      ),
+      transition('normal => newAdded', [animate(300)]),
+      transition('newAdded => normal', [animate(500)]),
+      // transition('zoomed <=> *', [animate(800)]),
+    ]),
+    trigger('newAddedAnimation', [
+      state('in', style({ opacity: 1, transform: 'translateY(0)' })),
+      transition('void => *', [
+        style({
+          opacity: 0,
+          transform: 'translateY(100px)',
+          backgroundColor: '#007bff',
+        }),
+        animate(400),
+      ]),
+      transition('* => void', [
+        animate(
+          400,
+          style({
+            opacity: 0,
+            transform: 'translateY(100px)',
+            backgroundColor: '#007bff',
+          }),
+        ),
+      ]),
+    ]),
+  ],
 })
 export class TodoListComponent implements OnInit {
   user = [];
@@ -30,6 +70,10 @@ export class TodoListComponent implements OnInit {
     message: string;
   };
   sortDeadline = false;
+  newTodo = true;
+  animateState = 'normal';
+  state = 'normal';
+  newId = [1, 2];
 
   constructor(
     private router: Router,
@@ -115,5 +159,9 @@ export class TodoListComponent implements OnInit {
     this.staticServices.updateData(todo).subscribe(data => {
       this.ngOnInit();
     });
+  }
+
+  onAnimate() {
+    this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
   }
 }
