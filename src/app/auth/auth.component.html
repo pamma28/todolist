@@ -1,0 +1,42 @@
+<app-alert-notif [notification]="notification"></app-alert-notif>
+<h3>Signing in required</h3>
+<form [formGroup]="signForm" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label for="email">email:</label>
+    <textarea
+      formControlName="email"
+      rows="3"
+      class="form-control"
+      [ngClass]="
+        signForm.get('email').invalid && signForm.get('email').touched
+          ? 'is-invalid'
+          : ''
+      "
+    ></textarea>
+    <div class="invalid-feedback">
+      Provide valid email please.
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="password">When the finish line?</label>
+    <input
+      type="date"
+      formControlName="password"
+      class="form-control"
+      [ngClass]="
+        signForm.get('password').invalid && signForm.get('password').touched
+          ? 'is-invalid'
+          : ''
+      "
+    />
+    <div class="invalid-feedback">
+      Valid password please.
+    </div>
+  </div>
+  <input
+    type="submit"
+    value="Submit"
+    class="btn btn-primary"
+    [disabled]="!signForm.valid"
+  />
+</form>

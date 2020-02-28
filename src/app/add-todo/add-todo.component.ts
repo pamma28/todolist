@@ -19,11 +19,13 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     message: string;
   };
   dataSaved = false;
+  editForm = false;
   previewScreenshot: string | ArrayBuffer;
 
   ngOnInit() {
     // edit logic
     if (history.state.todo) {
+      this.editForm = true;
       const editData: InstanceTodo = history.state.todo;
       this.newTodos = new FormGroup({
         description: new FormControl(editData.description, [
@@ -72,6 +74,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               type: 'success',
               message: 'Todos has been updated',
             };
+            this.editForm = false;
           },
           errorMessage => {
             this.notification = {

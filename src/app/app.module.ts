@@ -15,6 +15,7 @@ import { AlertNotifComponent } from './alert-notif/alert-notif.component';
 import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 import { HoverElementDirective } from './add-todo/style-directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AuthComponent } from './auth/auth.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +26,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProgressTodoComponent,
     AlertNotifComponent,
     HoverElementDirective,
+    AuthComponent,
   ],
   imports: [
     BrowserModule,
