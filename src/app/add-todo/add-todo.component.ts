@@ -19,6 +19,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     message: string;
   };
   dataSaved = false;
+  previewScreenshot: string | ArrayBuffer;
 
   ngOnInit() {
     // edit logic
@@ -35,6 +36,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
             .format('YYYY-MM-DD'),
           [Validators.required, this.allowedDates],
         ),
+        screenshot: new FormControl(null, [], []),
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });
@@ -46,6 +48,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
           Validators.maxLength(100),
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
+        screenshot: new FormControl(null, [], []),
         done: new FormControl(false, []),
         id: new FormControl(''),
       });
@@ -121,5 +124,17 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
       }
     }
     return true;
+  }
+
+  onImageSelected(event: Event) {
+    const image = (event.target as HTMLInputElement).files[0];
+    this.newTodos.patchValue({ screenshot: image });
+    this.newTodos.get('screenshot').updateValueAndValidity();
+
+    const img = new FileReader();
+    img.onload = () => {
+      this.previewScreenshot = img.result;
+    };
+    img.readAsDataURL(image);
   }
 }

@@ -18,6 +18,15 @@
       No more than 100 character please.
     </div>
   </div>
+  <div class="form-group">
+    <button class="btn btn-info" type="button" (click)="fileScreenshot.click()">
+      Attach image
+    </button>
+    <input type="file" (change)="onImageSelected($event)" #fileScreenshot />
+  </div>
+  <div class="form-group container-img" *ngIf="previewScreenshot">
+    <img [src]="previewScreenshot" [alt]="newTodos.get('description').value" />
+  </div>
 
   <div class="form-group">
     <label for="deadline">When the finish line?</label>
