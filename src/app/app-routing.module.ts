@@ -8,8 +8,7 @@ import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   { path: '', component: TodoListComponent },
-  { path: 'auth/login', component: AuthComponent },
-  { path: 'auth/signup', component: AuthComponent },
+  { path: 'auth/:page', component: AuthComponent },
   {
     path: 'add',
     component: AddTodoComponent,
