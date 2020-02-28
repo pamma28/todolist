@@ -4,9 +4,12 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
+import { AuthComponent } from './auth/auth.component';
 
 const routes: Routes = [
   { path: '', component: TodoListComponent },
+  { path: 'auth/login', component: AuthComponent },
+  { path: 'auth/signup', component: AuthComponent },
   {
     path: 'add',
     component: AddTodoComponent,

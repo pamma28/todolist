@@ -10,6 +10,7 @@ export class AuthComponent implements OnInit {
   constructor() {}
   signForm: FormGroup;
   notification: string;
+  signin = true;
 
   ngOnInit(): void {
     this.signForm = new FormGroup({
