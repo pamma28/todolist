@@ -82,20 +82,21 @@ export class TodoListComponent implements OnInit, OnDestroy {
     private staticServices: StaticServices,
     private router: Router,
     private activeRoute: ActivatedRoute,
-  ) {
+  ) {}
+
+  ngOnInit() {
     this.observerNewData = this.staticServices.observableNewData().subscribe(
-      newData => {
-        this.newId = [];
-        this.newId.push(newData);
-        console.log(newData);
+      (newData: any[]) => {
+        console.log('obsData', newData);
+        this.newId = newData;
       },
       err => {
         console.log(err);
       },
     );
-  }
+    this.newId = this.staticServices.getNewDataList();
+    console.log(this.newId);
 
-  ngOnInit() {
     this.staticServices
       .getData()
       .pipe(

@@ -36,6 +36,10 @@ export class StaticServices {
     return this.subject.asObservable();
   }
 
+  getNewDataList() {
+    return this.arrNewData;
+  }
+
   resetNewDataList() {
     this.subject.next([]);
   }

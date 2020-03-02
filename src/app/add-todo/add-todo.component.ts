@@ -13,6 +13,7 @@ import { Observable } from 'rxjs';
 })
 export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   constructor(private staticServices: StaticServices) {}
+
   newTodos: FormGroup;
   notification: {
     type: string;
@@ -96,6 +97,8 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
             };
             this.newTodos.reset();
             this.dataSaved = true;
+            // newId broadcast to observable
+            this.onSuccessAddition(responseData.id);
           },
           errorMessage => {
             this.notification = {
@@ -136,5 +139,9 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
       this.previewScreenshot = img.result;
     };
     img.readAsDataURL(image);
+  }
+
+  onSuccessAddition(id?: string) {
+    this.staticServices.addNewDataList(id);
   }
 }
