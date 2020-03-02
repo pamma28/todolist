@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   trigger,
   state,
@@ -7,6 +7,9 @@ import {
   animate,
 } from '@angular/animations';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { StaticServices } from './../services/static-data.service';
 import { InstanceTodo } from './../todo-list/todo.interface';
 import {
@@ -15,7 +18,6 @@ import {
   faSortAmountUp,
   faEdit,
 } from '@fortawesome/free-solid-svg-icons';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 @Component({
@@ -56,7 +58,7 @@ import * as moment from 'moment';
     ]),
   ],
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnDestroy {
   user = [];
   todos: InstanceTodo[];
   faTrash = faTrash;
@@ -73,13 +75,25 @@ export class TodoListComponent implements OnInit {
   newTodo = true;
   animateState = 'normal';
   state = 'normal';
-  newId = [1, 2];
+  newId: any[] = [];
+  observerNewData: Subscription;
 
   constructor(
+    private staticServices: StaticServices,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private staticServices: StaticServices,
-  ) {}
+  ) {
+    this.observerNewData = this.staticServices.observableNewData().subscribe(
+      newData => {
+        this.newId = [];
+        this.newId.push(newData);
+        console.log(newData);
+      },
+      err => {
+        console.log(err);
+      },
+    );
+  }
 
   ngOnInit() {
     this.staticServices
@@ -163,5 +177,9 @@ export class TodoListComponent implements OnInit {
 
   onAnimate() {
     this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
+  }
+
+  ngOnDestroy() {
+    this.observerNewData.unsubscribe();
   }
 }

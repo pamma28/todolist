@@ -23,9 +23,7 @@
     class="list-group-item list-group-item-action"
     [appHover]="todo.done"
   >
-    <div *ngIf="newId.includes(i)" [@newAddedAnimation]>
-      
-    </div>
+    <div *ngIf="newId.includes(i)" [@newAddedAnimation]></div>
     <div class="d-flex w-100 justify-content-between">
       <h5 class="mb-1"></h5>
       <small class="text-center">{{ todo.deadline | date }}</small>

@@ -89,7 +89,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
           done: dt.done,
         })
         .subscribe(
-          responseData => {
+          (responseData: InstanceTodo) => {
             this.notification = {
               type: 'success',
               message: 'Todos has been saved',
