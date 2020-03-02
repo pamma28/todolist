@@ -26,16 +26,6 @@ import * as moment from 'moment';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
   animations: [
-    // trigger('divState', [
-    //   state('normal', style({ transform: 'translateX(0)' })),
-    //   state(
-    //     'newAdded',
-    //     style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
-    //   ),
-    //   transition('normal => newAdded', [animate(300)]),
-    //   transition('newAdded => normal', [animate(500)]),
-    //   // transition('zoomed <=> *', [animate(800)]),
-    // ]),
     trigger('newDeletedAnimation', [
       state(
         'deleted',
@@ -106,6 +96,13 @@ import * as moment from 'moment';
     ]),
   ],
 })
+
+/*
+TodoListComponent display list of 'todo' from 'StaticServices'.
+animate new data with 'newAddedAnimation' from observable 'StaticServices'.
+animate deleted data with 'newDeletedAnimation'.
+it has custom directive, 'appHover' to show todo has done with springgreen background.
+ */
 export class TodoListComponent implements OnInit, OnDestroy {
   user = [];
   todos: InstanceTodo[];
