@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   trigger,
   state,
   style,
   transition,
   animate,
+  keyframes,
 } from '@angular/animations';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -35,6 +36,41 @@ import * as moment from 'moment';
     //   transition('newAdded => normal', [animate(500)]),
     //   // transition('zoomed <=> *', [animate(800)]),
     // ]),
+    trigger('newDeletedAnimation', [
+      state(
+        'deleted',
+        style({
+          opacity: 1,
+          transform: 'translateY(0px)',
+        }),
+      ),
+      transition('* => void', [
+        animate(
+          500,
+          keyframes([
+            style({
+              opacity: 0.8,
+              transform: 'translateY(-10px)',
+              backgroundColor: 'red',
+              offset: 0.1,
+            }),
+            style({
+              opacity: 0.2,
+              transform: 'translateY(-80px)',
+              backgroundColor: 'red',
+              offset: 0.8,
+            }),
+            style({
+              opacity: 0,
+              transform: 'translateY(-100px)',
+              backgroundColor: 'red',
+              offset: 1,
+            }),
+          ]),
+        ),
+      ]),
+    ]),
+
     trigger('newAddedAnimation', [
       state('in', style({ opacity: 1, transform: 'translateY(0)' })),
       transition('void => *', [
@@ -43,16 +79,28 @@ import * as moment from 'moment';
           transform: 'translateY(100px)',
           backgroundColor: '#007bff',
         }),
-        animate(400),
-      ]),
-      transition('* => void', [
         animate(
-          400,
-          style({
-            opacity: 0,
-            transform: 'translateY(100px)',
-            backgroundColor: '#007bff',
-          }),
+          500,
+          keyframes([
+            style({
+              opacity: 0,
+              transform: 'translateY(0px)',
+              backgroundColor: '#007bff',
+              offset: 0.1,
+            }),
+            style({
+              opacity: 0.8,
+              transform: 'translateY(80px)',
+              backgroundColor: '#007bff',
+              offset: 0.8,
+            }),
+            style({
+              opacity: 1,
+              transform: 'translateY(100px)',
+              backgroundColor: '#007bff',
+              offset: 1,
+            }),
+          ]),
         ),
       ]),
     ]),
@@ -73,8 +121,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
   };
   sortDeadline = false;
   newTodo = true;
-  animateState = 'normal';
-  state = 'normal';
   newId: any[] = [];
   observerNewData: Subscription;
 
@@ -143,7 +189,9 @@ export class TodoListComponent implements OnInit, OnDestroy {
             type: 'success',
             message: 'Todos selected has gone',
           };
-          this.ngOnInit();
+          this.todos = this.todos.filter(
+            dt => dt.id.toString() !== todo.id.toString(),
+          );
         },
         errorMessage => {
           this.notification = {
@@ -153,7 +201,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
         },
       );
     } else {
-      this.ngOnInit();
     }
   }
 
