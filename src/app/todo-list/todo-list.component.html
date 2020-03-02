@@ -23,7 +23,11 @@
     class="list-group-item list-group-item-action"
     [appHover]="todo.done"
   >
-    <div [@newAddedAnimation] [@.disabled]="!newId.includes(todo.id)">
+    <div
+      [@newAddedAnimation]
+      [@.disabled]="!newId.includes(todo.id)"
+      (@newAddedAnimation.done)="resetDataAnimation($event)"
+    >
       <div class="d-flex w-100 justify-content-between">
         <h5 class="mb-1"></h5>
         <small class="text-center">{{ todo.deadline | date }}</small>

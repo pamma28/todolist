@@ -96,6 +96,9 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
+            this.newTodos.patchValue({
+              done: false,
+            });
             this.dataSaved = true;
             // newId broadcast to observable
             this.onSuccessAddition(responseData.id);

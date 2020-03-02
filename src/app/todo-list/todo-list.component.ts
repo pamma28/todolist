@@ -180,7 +180,10 @@ export class TodoListComponent implements OnInit, OnDestroy {
   // }
 
   ngOnDestroy() {
-    this.staticServices.resetNewDataList();
     this.observerNewData.unsubscribe();
+  }
+
+  resetDataAnimation(event: Event) {
+    this.staticServices.resetNewDataList();
   }
 }
