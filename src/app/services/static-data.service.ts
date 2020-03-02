@@ -41,6 +41,7 @@ export class StaticServices {
   }
 
   resetNewDataList() {
+    this.arrNewData = [];
     this.subject.next([]);
   }
 }

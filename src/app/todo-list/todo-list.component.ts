@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import {
   trigger,
   state,
@@ -25,16 +25,16 @@ import * as moment from 'moment';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
   animations: [
-    trigger('divState', [
-      state('normal', style({ transform: 'translateX(0)' })),
-      state(
-        'newAdded',
-        style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
-      ),
-      transition('normal => newAdded', [animate(300)]),
-      transition('newAdded => normal', [animate(500)]),
-      // transition('zoomed <=> *', [animate(800)]),
-    ]),
+    // trigger('divState', [
+    //   state('normal', style({ transform: 'translateX(0)' })),
+    //   state(
+    //     'newAdded',
+    //     style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
+    //   ),
+    //   transition('normal => newAdded', [animate(300)]),
+    //   transition('newAdded => normal', [animate(500)]),
+    //   // transition('zoomed <=> *', [animate(800)]),
+    // ]),
     trigger('newAddedAnimation', [
       state('in', style({ opacity: 1, transform: 'translateY(0)' })),
       transition('void => *', [
@@ -87,7 +87,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.observerNewData = this.staticServices.observableNewData().subscribe(
       (newData: any[]) => {
-        console.log('obsData', newData);
         this.newId = newData;
       },
       err => {
@@ -95,7 +94,6 @@ export class TodoListComponent implements OnInit, OnDestroy {
       },
     );
     this.newId = this.staticServices.getNewDataList();
-    console.log(this.newId);
 
     this.staticServices
       .getData()
@@ -176,11 +174,13 @@ export class TodoListComponent implements OnInit, OnDestroy {
     });
   }
 
-  onAnimate() {
-    this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
-  }
+  // onAnimate() {
+  //   console.log(this.animateState);
+  //   this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
+  // }
 
   ngOnDestroy() {
+    this.staticServices.resetNewDataList();
     this.observerNewData.unsubscribe();
   }
 }
