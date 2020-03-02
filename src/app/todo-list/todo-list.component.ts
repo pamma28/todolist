@@ -1,12 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   trigger,
   state,
   style,
   transition,
   animate,
+  keyframes,
 } from '@angular/animations';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+
 import { StaticServices } from './../services/static-data.service';
 import { InstanceTodo } from './../todo-list/todo.interface';
 import {
@@ -15,7 +19,6 @@ import {
   faSortAmountUp,
   faEdit,
 } from '@fortawesome/free-solid-svg-icons';
-import { map } from 'rxjs/operators';
 import * as moment from 'moment';
 
 @Component({
@@ -23,16 +26,51 @@ import * as moment from 'moment';
   templateUrl: './todo-list.component.html',
   styleUrls: ['./todo-list.component.css'],
   animations: [
-    trigger('divState', [
-      state('normal', style({ transform: 'translateX(0)' })),
+    // trigger('divState', [
+    //   state('normal', style({ transform: 'translateX(0)' })),
+    //   state(
+    //     'newAdded',
+    //     style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
+    //   ),
+    //   transition('normal => newAdded', [animate(300)]),
+    //   transition('newAdded => normal', [animate(500)]),
+    //   // transition('zoomed <=> *', [animate(800)]),
+    // ]),
+    trigger('newDeletedAnimation', [
       state(
-        'newAdded',
-        style({ backgroundColor: 'darkblue', transform: 'translateX(100px)' }),
+        'deleted',
+        style({
+          opacity: 1,
+          transform: 'translateY(0px)',
+        }),
       ),
-      transition('normal => newAdded', [animate(300)]),
-      transition('newAdded => normal', [animate(500)]),
-      // transition('zoomed <=> *', [animate(800)]),
+      transition('* => void', [
+        animate(
+          500,
+          keyframes([
+            style({
+              opacity: 0.8,
+              transform: 'translateY(-10px)',
+              backgroundColor: 'red',
+              offset: 0.1,
+            }),
+            style({
+              opacity: 0.2,
+              transform: 'translateY(-80px)',
+              backgroundColor: 'red',
+              offset: 0.8,
+            }),
+            style({
+              opacity: 0,
+              transform: 'translateY(-100px)',
+              backgroundColor: 'red',
+              offset: 1,
+            }),
+          ]),
+        ),
+      ]),
     ]),
+
     trigger('newAddedAnimation', [
       state('in', style({ opacity: 1, transform: 'translateY(0)' })),
       transition('void => *', [
@@ -41,22 +79,34 @@ import * as moment from 'moment';
           transform: 'translateY(100px)',
           backgroundColor: '#007bff',
         }),
-        animate(400),
-      ]),
-      transition('* => void', [
         animate(
-          400,
-          style({
-            opacity: 0,
-            transform: 'translateY(100px)',
-            backgroundColor: '#007bff',
-          }),
+          500,
+          keyframes([
+            style({
+              opacity: 0,
+              transform: 'translateY(0px)',
+              backgroundColor: '#007bff',
+              offset: 0.1,
+            }),
+            style({
+              opacity: 0.8,
+              transform: 'translateY(80px)',
+              backgroundColor: '#007bff',
+              offset: 0.8,
+            }),
+            style({
+              opacity: 1,
+              transform: 'translateY(100px)',
+              backgroundColor: '#007bff',
+              offset: 1,
+            }),
+          ]),
         ),
       ]),
     ]),
   ],
 })
-export class TodoListComponent implements OnInit {
+export class TodoListComponent implements OnInit, OnDestroy {
   user = [];
   todos: InstanceTodo[];
   faTrash = faTrash;
@@ -71,17 +121,26 @@ export class TodoListComponent implements OnInit {
   };
   sortDeadline = false;
   newTodo = true;
-  animateState = 'normal';
-  state = 'normal';
-  newId = [1, 2];
+  newId: any[] = [];
+  observerNewData: Subscription;
 
   constructor(
+    private staticServices: StaticServices,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private staticServices: StaticServices,
   ) {}
 
   ngOnInit() {
+    this.observerNewData = this.staticServices.observableNewData().subscribe(
+      (newData: any[]) => {
+        this.newId = newData;
+      },
+      err => {
+        console.log(err);
+      },
+    );
+    this.newId = this.staticServices.getNewDataList();
+
     this.staticServices
       .getData()
       .pipe(
@@ -130,7 +189,9 @@ export class TodoListComponent implements OnInit {
             type: 'success',
             message: 'Todos selected has gone',
           };
-          this.ngOnInit();
+          this.todos = this.todos.filter(
+            dt => dt.id.toString() !== todo.id.toString(),
+          );
         },
         errorMessage => {
           this.notification = {
@@ -140,7 +201,6 @@ export class TodoListComponent implements OnInit {
         },
       );
     } else {
-      this.ngOnInit();
     }
   }
 
@@ -157,11 +217,20 @@ export class TodoListComponent implements OnInit {
   onSwitchDone(todo: InstanceTodo) {
     todo.done = !todo.done;
     this.staticServices.updateData(todo).subscribe(data => {
-      this.ngOnInit();
+      this.todos[this.todos.indexOf(todo)].done = todo.done;
     });
   }
 
-  onAnimate() {
-    this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
+  // onAnimate() {
+  //   console.log(this.animateState);
+  //   this.animateState = this.animateState === 'normal' ? 'newAdded' : 'normal';
+  // }
+
+  ngOnDestroy() {
+    this.observerNewData.unsubscribe();
+  }
+
+  resetDataAnimation(event: Event) {
+    this.staticServices.resetNewDataList();
   }
 }

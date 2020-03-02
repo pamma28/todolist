@@ -28,6 +28,12 @@ export class HoverElementDirective implements OnInit {
         'background-color',
         'springgreen',
       );
+    } else {
+      this.renderer.setStyle(
+        this.elementRef.nativeElement,
+        'background-color',
+        'transparent',
+      );
     }
   }
 
