@@ -11,6 +11,13 @@ import { Observable } from 'rxjs';
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.css'],
 })
+/*
+AddTodoComponent can be used for edit and add new 'todo' depends on state parameter given.
+if given, then act like edit, if not it will add new.
+it has custom validators 'allowedDates' for date input.
+it has guard 'canDeactivate' to prevent user from leaving page before saving data
+it uses observable from 'StaticServices' to collect new data list, then display animation on home.
+ */
 export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   constructor(private staticServices: StaticServices) {}
 
