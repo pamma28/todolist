@@ -38,7 +38,7 @@ export class AuthComponent implements OnInit {
       email: new FormControl('', [Validators.required], []),
       password: new FormControl(
         '',
-        [Validators.required, Validators.minLength(6)],
+        [Validators.required, Validators.minLength(8)],
         [],
       ),
       repassword: new FormControl(
@@ -47,10 +47,10 @@ export class AuthComponent implements OnInit {
           ? []
           : [
               Validators.required,
-              Validators.minLength(6),
-              Validators.pattern(
-                '^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]$',
-              ),
+              Validators.minLength(8),
+              // Validators.pattern(
+              //   '^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]$',
+              // ),
             ],
         [],
       ),
@@ -67,9 +67,9 @@ export class AuthComponent implements OnInit {
           password: this.signForm.get('password').value,
         })
         .subscribe(
-          (dataToken: { token: string }) => {
+          (dataToken: { access_token: string }) => {
             if (dataToken) {
-              this.restServices.setToken(dataToken.token);
+              this.restServices.setToken(dataToken.access_token);
               this.router.navigate(['/']);
             } else {
               // error handling
@@ -79,13 +79,20 @@ export class AuthComponent implements OnInit {
         );
     } else {
       // logic if sign up
-      const validSignUp = this.restServices.signUp({
-        email: this.signForm.get('email').value,
-        password: this.signForm.get('password').value,
-      });
-      if (validSignUp) {
-        this.router.navigate(['/signin']);
-      }
+      const validSignUp = this.restServices
+        .signUp({
+          name: this.signForm.get('name').value,
+          email: this.signForm.get('email').value,
+          password: this.signForm.get('password').value,
+        })
+        .subscribe(
+          dataSignUp => {
+            if (dataSignUp) {
+              this.router.navigate(['auth/login']);
+            }
+          },
+          errSignUp => {},
+        );
     }
   }
 }

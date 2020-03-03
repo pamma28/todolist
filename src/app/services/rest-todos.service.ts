@@ -29,7 +29,7 @@ export class RestTodosService {
   signUp(user: User) {
     return this.http.post(
       this.urlApi + 'auth/signup',
-      { name: user.name, username: user.email, password: user.password },
+      { name: user.name, email: user.email, password: user.password },
       {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',

@@ -1,6 +1,23 @@
 <app-alert-notif [notification]="notification"></app-alert-notif>
 <h5>{{ signin ? 'Sign in' : 'Sign up' }}</h5>
 <form [formGroup]="signForm" (ngSubmit)="onSubmit()">
+  <div class="form-group row" *ngIf="!signin">
+    <div class="col-sm-12">
+      <input
+        placeholder="your name"
+        formControlName="name"
+        class="form-control"
+        [ngClass]="
+          signForm.get('name').invalid && signForm.get('name').touched
+            ? 'is-invalid'
+            : ''
+        "
+      />
+      <div class="invalid-feedback">
+        Provide valid name please.
+      </div>
+    </div>
+  </div>
   <div class="form-group row">
     <div class="col-sm-12">
       <input
