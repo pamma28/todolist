@@ -17,6 +17,7 @@ import { HoverElementDirective } from './add-todo/style-directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
 import { StaticServices } from './services/static-data.service';
+import { RestTodosService } from './services/rest-todos.service';
 @NgModule({
   declarations: [
     AppComponent,

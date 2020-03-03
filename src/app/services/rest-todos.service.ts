@@ -1,72 +1,41 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
-
-export class RestTodos {
-  constructor(private http: HttpClient) {}
-  urlApi = 'https://cdc-todo-be.herokuapp.com';
+import { Subscription, Subject, Observable } from 'rxjs';
+import { User } from '../auth/user.interface';
+import { Injectable } from '@angular/core';
+@Injectable({ providedIn: 'root' })
+export class RestTodosService {
+  constructor(private http: HttpClient) {
+    this.userLoggedIn.next(false);
+    this.userToken.next(this.token);
+  }
+  urlApi = 'https://cdc-todo-be.herokuapp.com/';
   token = null;
   subscription = Subscription;
+  private userLoggedIn = new Subject<boolean>();
+  private userToken = new Subject();
 
-  signIn() {
-    const user = 'cdc.mitrais@mailinator.com';
-    const pass = 'supersecret';
+  signIn(user: User) {
+    return this.http.post(
+      this.urlApi + 'auth/signin',
+      { username: user.email, password: user.password },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      },
+    );
+  }
 
-    // check token
-    if (this.token) {
-      // observe response with current token
-      this.http
-        .post(
-          this.urlApi + '/users',
-          { username: user, password: pass },
-          { observe: 'response' },
-        )
-        .subscribe(
-          responseData => {
-            if (responseData.status !== 200) {
-              // reset token and resigning
-              this.token = null;
-              return this.signIn();
-            } else {
-              return true;
-            }
-          },
-          errorResponse => {
-            console.log(errorResponse, 'retrying in 1,5s');
-            // try resigning in 1,5s
-            setTimeout(() => {
-              return this.signIn();
-            }, 1500);
-          },
-        );
-    } else {
-      // get newest token
-      this.http
-        .post(
-          this.urlApi,
-          { username: user, password: pass },
-          {
-            headers: new HttpHeaders({
-              'çontent-type': 'application/json',
-            }),
-          },
-        )
-        // .pipe(map(tokenData => {
-        //     return tokenData;
-        // }))
-        .subscribe((tokenData: { token?: string }) => {
-          if (tokenData.token) {
-            this.token = tokenData.token;
-            return true;
-          } else {
-            console.log('failed login, retrying in 1,5s.');
-            // try resigning in 1,5s
-            setTimeout(() => {
-              return this.signIn();
-            }, 1500);
-          }
-        });
-    }
+  signUp(user: User) {
+    return this.http.post(
+      this.urlApi + 'auth/signup',
+      { name: user.name, username: user.email, password: user.password },
+      {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      },
+    );
   }
 
   userTasks() {
@@ -82,5 +51,17 @@ export class RestTodos {
         }),
       },
     );
+  }
+
+  obsUserToken() {
+    return this.userToken.asObservable();
+  }
+
+  setToken(token: string) {
+    this.userToken.next(token);
+  }
+
+  obsUserLoggedIn(): Observable<boolean> {
+    return this.userLoggedIn.asObservable();
   }
 }
