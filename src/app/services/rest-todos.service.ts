@@ -9,7 +9,7 @@ export class RestTodosService {
     this.userToken.next(this.token);
   }
   urlApi = 'https://cdc-todo-be.herokuapp.com/';
-  token = null;
+  private token = null;
   subscription = Subscription;
   private userLoggedIn = new Subject<boolean>();
   private userToken = new Subject();
@@ -59,6 +59,7 @@ export class RestTodosService {
 
   setToken(token: string) {
     this.userToken.next(token);
+    this.userLoggedIn.next(token ? true : false);
   }
 
   obsUserLoggedIn(): Observable<boolean> {

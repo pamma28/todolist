@@ -1,4 +1,4 @@
-<ul class="nav nav-pills nav-fill" *ngIf="false">
+<ul class="nav nav-pills nav-fill" *ngIf="userLoggedIn">
   <li class="nav-item">
     <a
       class="nav-link"
@@ -8,17 +8,22 @@
       >Home</a
     >
   </li>
-  <li class="nav-item">
+  <!-- <li class="nav-item">
     <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
       >Edit Todo</a
     >
-  </li>
+  </li> -->
   <li class="nav-item">
     <a class="nav-link" routerLinkActive="active" routerLink="/add">Add Todo</a>
   </li>
+  <li class="nav-item">
+    <a class="nav-link" routerLinkActive="active" (click)="doLogout()"
+      >Logout</a
+    >
+  </li>
 </ul>
 
-<ul class="nav nav-pills nav-fill">
+<ul class="nav nav-pills nav-fill" *ngIf="!userLoggedIn">
   <li class="nav-item">
     <a
       class="nav-link"
