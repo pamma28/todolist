@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subject, Observable } from 'rxjs';
 import { InstanceTodo } from './../todo-list/todo.interface';
 
 @Injectable({ providedIn: 'root' })
@@ -8,6 +8,8 @@ export class StaticServices {
   urlApi = 'https://cdc-web-frontend.herokuapp.com/todos';
 
   constructor(private http: HttpClient) {}
+  private subject = new Subject();
+  arrNewData = [];
 
   getData() {
     return this.http.get<InstanceTodo[]>(this.urlApi);
@@ -23,5 +25,23 @@ export class StaticServices {
 
   deleteData(id: string) {
     return this.http.delete(this.urlApi + `/${id}`);
+  }
+
+  addNewDataList(id: string) {
+    this.arrNewData.push(id);
+    this.subject.next(this.arrNewData);
+  }
+
+  observableNewData() {
+    return this.subject.asObservable();
+  }
+
+  getNewDataList() {
+    return this.arrNewData;
+  }
+
+  resetNewDataList() {
+    this.arrNewData = [];
+    this.subject.next([]);
   }
 }

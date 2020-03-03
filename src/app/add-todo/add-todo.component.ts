@@ -11,8 +11,16 @@ import { Observable } from 'rxjs';
   templateUrl: './add-todo.component.html',
   styleUrls: ['./add-todo.component.css'],
 })
+/*
+AddTodoComponent can be used for edit and add new 'todo' depends on state parameter given.
+if given, then act like edit, if not it will add new.
+it has custom validators 'allowedDates' for date input.
+it has guard 'canDeactivate' to prevent user from leaving page before saving data
+it uses observable from 'StaticServices' to collect new data list, then display animation on home.
+ */
 export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   constructor(private staticServices: StaticServices) {}
+
   newTodos: FormGroup;
   notification: {
     type: string;
@@ -92,13 +100,18 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
           done: dt.done,
         })
         .subscribe(
-          responseData => {
+          (responseData: InstanceTodo) => {
             this.notification = {
               type: 'success',
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
+            this.newTodos.patchValue({
+              done: false,
+            });
             this.dataSaved = true;
+            // newId broadcast to observable
+            this.onSuccessAddition(responseData.id);
           },
           errorMessage => {
             this.notification = {
@@ -139,5 +152,9 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
       this.previewScreenshot = img.result;
     };
     img.readAsDataURL(image);
+  }
+
+  onSuccessAddition(id?: string) {
+    this.staticServices.addNewDataList(id);
   }
 }

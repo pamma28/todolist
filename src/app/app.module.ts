@@ -16,6 +16,7 @@ import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 import { HoverElementDirective } from './add-todo/style-directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
+import { StaticServices } from './services/static-data.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,7 +37,7 @@ import { AuthComponent } from './auth/auth.component';
     FontAwesomeModule,
     BrowserAnimationsModule,
   ],
-  providers: [CanDeactivateGuard],
+  providers: [StaticServices, CanDeactivateGuard],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

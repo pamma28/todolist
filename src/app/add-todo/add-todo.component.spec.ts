@@ -13,7 +13,10 @@ describe('AddTodoComponent', () => {
   const formBuilder: FormBuilder = new FormBuilder();
   beforeEach(async(() => {
     let todoList = [];
-    const staticServices = jasmine.createSpyObj('StaticServices', ['postData']);
+    const staticServices = jasmine.createSpyObj('StaticServices', [
+      'postData',
+      'addNewDataList',
+    ]);
     todoList = staticServices.postData.and.returnValue(of(todoList));
     window.history.pushState({ todo: null }, '', '');
     TestBed.configureTestingModule({
@@ -39,6 +42,7 @@ describe('AddTodoComponent', () => {
   it('invalid past date', () => {
     component.newTodos.setValue({
       description: null,
+      screenshot: null,
       deadline: '2020-02-20',
       done: false,
       id: null,
@@ -49,6 +53,7 @@ describe('AddTodoComponent', () => {
   it('valid todo creation', () => {
     component.newTodos.setValue({
       description: 'test with jasmine karma',
+      screenshot: null,
       deadline: '2021-02-20',
       done: false,
       id: null,
@@ -107,6 +112,7 @@ describe('EditTodoComponent', () => {
   it('invalid if change into past date', () => {
     component.newTodos.setValue({
       description: window.history.state.todo.description,
+      screenshot: null,
       deadline: '2020-02-20',
       done: window.history.state.todo.done,
       id: window.history.state.todo.id,
@@ -117,6 +123,7 @@ describe('EditTodoComponent', () => {
   it('valid todo update', () => {
     component.newTodos.setValue({
       description: window.history.state.todo.description + ' update',
+      screenshot: null,
       deadline: window.history.state.todo.deadline,
       done: window.history.state.todo.done,
       id: window.history.state.todo.id,
