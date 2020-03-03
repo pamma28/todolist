@@ -5,6 +5,7 @@ import { AddTodoComponent } from './add-todo/add-todo.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 import { AuthComponent } from './auth/auth.component';
+import { AuthGuard } from './services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', component: TodoListComponent },
@@ -13,8 +14,9 @@ const routes: Routes = [
     path: 'add',
     component: AddTodoComponent,
     canDeactivate: [CanDeactivateGuard],
+    canActivate: [AuthGuard],
   },
-  { path: 'edit', component: AddTodoComponent },
+  { path: 'edit', component: AddTodoComponent, canActivate: [AuthGuard] },
   { path: '404', component: NotFoundComponent },
   { path: '**', redirectTo: '404' },
 ];
@@ -22,5 +24,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
+  providers: [AuthGuard],
 })
 export class AppRoutingModule {}
