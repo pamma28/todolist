@@ -64,4 +64,8 @@ export class RestTodosService {
   obsUserLoggedIn(): Observable<boolean> {
     return this.userLoggedIn.asObservable();
   }
+
+  getToken() {
+    return this.token;
+  }
 }

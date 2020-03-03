@@ -7,7 +7,7 @@ import { TodoListComponent } from './todo-list/todo-list.component';
 import { AddTodoComponent } from './add-todo/add-todo.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NotFoundComponent } from './not-found/not-found.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
 import { StaticServices } from './services/static-data.service';
 import { RestTodosService } from './services/rest-todos.service';
+import { AuthInterceptor } from './auth/auth.interceptor';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,7 +39,11 @@ import { RestTodosService } from './services/rest-todos.service';
     FontAwesomeModule,
     BrowserAnimationsModule,
   ],
-  providers: [StaticServices, CanDeactivateGuard],
+  providers: [
+    StaticServices,
+    CanDeactivateGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
