@@ -5,6 +5,7 @@ import { InstanceTodo } from './../todo-list/todo.interface';
 import * as moment from 'moment';
 import { CanComponentDeactivate } from './can-deactivate-guard.interface';
 import { Observable } from 'rxjs';
+import { RestTodoService } from '../services/rest-todo.service';
 
 @Component({
   selector: 'app-add-todo',
@@ -19,7 +20,10 @@ it has guard 'canDeactivate' to prevent user from leaving page before saving dat
 it uses observable from 'StaticServices' to collect new data list, then display animation on home.
  */
 export class AddTodoComponent implements OnInit, CanComponentDeactivate {
-  constructor(private staticServices: StaticServices) {}
+  constructor(
+    private staticServices: StaticServices,
+    private restServices: RestTodoService,
+  ) {}
 
   newTodos: FormGroup;
   notification: {
@@ -59,7 +63,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
         screenshot: new FormControl(null, [], []),
-        done: new FormControl(false, []),
+        done: new FormControl('', []),
         id: new FormControl(''),
       });
     }
@@ -69,8 +73,8 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     const dt = this.newTodos.value;
     if (dt.id) {
       // logic edit
-      this.staticServices
-        .updateData({
+      this.restServices
+        .patchTodo({
           description: dt.description,
           deadline: moment(dt.deadline).toDate(),
           done: dt.done,
@@ -93,11 +97,10 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         );
     } else {
       // logic add
-      this.staticServices
-        .postData({
+      this.restServices
+        .addTodo({
           description: dt.description,
           deadline: moment(dt.deadline).toDate(),
-          done: dt.done,
         })
         .subscribe(
           (responseData: InstanceTodo) => {
@@ -106,9 +109,6 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
-            this.newTodos.patchValue({
-              done: false,
-            });
             this.dataSaved = true;
             // newId broadcast to observable
             this.onSuccessAddition(responseData.id);

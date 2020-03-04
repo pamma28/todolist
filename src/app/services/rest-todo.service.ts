@@ -14,7 +14,7 @@ export class RestTodoService {
 
   addTodo(todo: InstanceTodo) {
     return this.http.post(
-      this.urlApi + 'tasks/',
+      this.urlApi,
       { description: todo.description, deadline: todo.deadline.toISOString() },
       {
         headers: new HttpHeaders({
@@ -25,7 +25,7 @@ export class RestTodoService {
   }
 
   getDetailTodo(id: string) {
-    return this.http.get<InstanceTodo>(this.urlApi + +id);
+    return this.http.get<InstanceTodo>(this.urlApi + id);
   }
 
   patchTodo(todo: InstanceTodo) {
@@ -53,6 +53,6 @@ export class RestTodoService {
   }
 
   deleteTodo(id: string) {
-    return this.http.delete(this.urlApi + +id);
+    return this.http.delete(this.urlApi + id);
   }
 }

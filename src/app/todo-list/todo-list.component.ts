@@ -67,28 +67,28 @@ import { RestTodoService } from '../services/rest-todo.service';
       transition('void => *', [
         style({
           opacity: 0,
-          transform: 'translateY(100px)',
-          backgroundColor: '#007bff',
+          transform: 'translateY(0px)',
+          backgroundColor: '#007bff4f',
         }),
         animate(
           500,
           keyframes([
             style({
               opacity: 0,
-              transform: 'translateY(0px)',
-              backgroundColor: '#007bff',
+              transform: 'translateY(-100px)',
+              backgroundColor: '#007bff4f',
               offset: 0.1,
             }),
             style({
               opacity: 0.8,
-              transform: 'translateY(80px)',
-              backgroundColor: '#007bff',
+              transform: 'translateY(-20px)',
+              backgroundColor: '#007bff4f',
               offset: 0.8,
             }),
             style({
               opacity: 1,
-              transform: 'translateY(100px)',
-              backgroundColor: '#007bff',
+              transform: 'translateY(0px)',
+              backgroundColor: '#007bff4f',
               offset: 1,
             }),
           ]),
@@ -125,7 +125,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   constructor(
     private staticServices: StaticServices,
     private router: Router,
-    private restServices: RestTodoService
+    private restServices: RestTodoService,
   ) {}
 
   ngOnInit() {
@@ -138,6 +138,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       },
     );
     this.newId = this.staticServices.getNewDataList();
+    // this.newId = ['88056a30-5ded-11ea-930d-639fc8d7422d'];
 
     this.restServices
       .getTodo()
