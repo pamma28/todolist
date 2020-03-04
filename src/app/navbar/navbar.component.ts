@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RestTodosService } from '../services/rest-todos.service';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
-  constructor(private restService: RestTodosService, private router: Router) {}
+  constructor(private restService: AuthService, private router: Router) {}
   userLoggedIn = false;
   ngOnInit() {
     this.userLoggedIn = this.restService.getToken() !== null ? true : false;

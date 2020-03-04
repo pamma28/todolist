@@ -4,7 +4,7 @@ import { User } from '../auth/user.interface';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
-export class RestTodosService {
+export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
     const tokenActive = localStorage.getItem('token');
     this.token = tokenActive ? tokenActive : null;

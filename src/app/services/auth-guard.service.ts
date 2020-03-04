@@ -5,10 +5,10 @@ import {
   Router,
 } from '@angular/router';
 import { Injectable } from '@angular/core';
-import { RestTodosService } from './rest-todos.service';
+import { AuthService } from './auth.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private restService: RestTodosService, private router: Router) {
+  constructor(private restService: AuthService, private router: Router) {
     const activeToken = this.restService.getToken();
     this.loggedIn = activeToken !== null ? true : false;
     this.restService.obsUserLoggedIn().subscribe((loggedIn: boolean) => {

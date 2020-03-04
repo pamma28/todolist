@@ -7,7 +7,7 @@ import {
   AbstractControl,
 } from '@angular/forms';
 import { Params, ActivatedRoute, Router } from '@angular/router';
-import { RestTodosService } from '../services/rest-todos.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-auth',
@@ -18,7 +18,7 @@ export class AuthComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private restServices: RestTodosService,
+    private restServices: AuthService,
   ) {
     this.signForm = new FormGroup({
       name: new FormControl(''),
