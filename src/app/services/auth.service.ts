@@ -61,6 +61,7 @@ export class AuthService {
   }
 
   setToken(token: string) {
+    this.token = token;
     localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);

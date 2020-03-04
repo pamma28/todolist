@@ -20,6 +20,7 @@ import {
   faEdit,
 } from '@fortawesome/free-solid-svg-icons';
 import * as moment from 'moment';
+import { RestTodoService } from '../services/rest-todo.service';
 
 @Component({
   selector: 'app-todo-list',
@@ -124,7 +125,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
   constructor(
     private staticServices: StaticServices,
     private router: Router,
-    private activeRoute: ActivatedRoute,
+    private restServices: RestTodoService
   ) {}
 
   ngOnInit() {
@@ -138,8 +139,8 @@ export class TodoListComponent implements OnInit, OnDestroy {
     );
     this.newId = this.staticServices.getNewDataList();
 
-    this.staticServices
-      .getData()
+    this.restServices
+      .getTodo()
       .pipe(
         map(data => {
           let finish = 0;
@@ -180,7 +181,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   onConfirmDelete(todo: InstanceTodo) {
     if (confirm(`Do you really want to delete "${todo.description}"?`)) {
-      this.staticServices.deleteData(todo.id).subscribe(
+      this.restServices.deleteTodo(todo.id).subscribe(
         data => {
           this.notification = {
             type: 'success',
