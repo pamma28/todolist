@@ -9,6 +9,7 @@ import { RestTodosService } from './rest-todos.service';
 @Injectable()
 export class AuthGuard implements CanActivate {
   constructor(private restService: RestTodosService, private router: Router) {
+    this.loggedIn = this.restService.getToken() !== null ? true : false;
     this.restService.obsUserLoggedIn().subscribe((loggedIn: boolean) => {
       this.loggedIn = loggedIn;
     });

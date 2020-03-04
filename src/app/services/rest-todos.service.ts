@@ -83,7 +83,7 @@ export class RestTodosService {
   }
 
   logout() {
-    localStorage.setItem('token', null);
+    localStorage.clear();
     this.token = null;
     this.userToken.next(null);
     this.userLoggedIn.next(false);

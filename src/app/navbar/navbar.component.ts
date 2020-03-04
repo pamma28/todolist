@@ -11,6 +11,7 @@ export class NavbarComponent implements OnInit {
   constructor(private restService: RestTodosService, private router: Router) {}
   userLoggedIn = false;
   ngOnInit() {
+    this.userLoggedIn = this.restService.getToken() !== null ? true : false;
     this.restService.obsUserLoggedIn().subscribe(loggedIn => {
       this.userLoggedIn = loggedIn;
     });

@@ -9,7 +9,7 @@ import { AuthGuard } from './services/auth-guard.service';
 
 const routes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
-  { path: 'home', component: TodoListComponent },
+  { path: 'home', component: TodoListComponent, canActivate: [AuthGuard] },
   { path: 'auth/:page', component: AuthComponent },
   {
     path: 'add',
