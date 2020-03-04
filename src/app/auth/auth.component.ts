@@ -64,6 +64,7 @@ export class AuthComponent implements OnInit {
           this.router.navigate(['/404']);
           break;
       }
+      // console.log(this.signin);
       this.notification = undefined;
 
       this.signForm
@@ -109,7 +110,6 @@ export class AuthComponent implements OnInit {
           (dataToken: { access_token: string }) => {
             if (dataToken) {
               this.restServices.setToken(dataToken.access_token);
-              this.router.navigate(['/', 'home']);
             } else {
               // error handling
               this.notification = {

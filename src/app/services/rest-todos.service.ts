@@ -64,6 +64,7 @@ export class RestTodosService {
     localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);
+    this.router.navigate(['/home']);
   }
 
   obsUserLoggedIn(): Observable<boolean> {
