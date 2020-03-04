@@ -26,10 +26,26 @@
     >
       Attach image
     </button>
-    <input type="file" (change)="onImageSelected($event)" #fileScreenshot />
-  </div>
-  <div class="form-group container-img" *ngIf="previewScreenshot">
-    <img [src]="previewScreenshot" [alt]="newTodos.get('description').value" />
+    <input
+      type="file"
+      (change)="onImageSelected($event)"
+      #fileScreenshot
+      [ngClass]="
+        newTodos.get('screenshot').invalid ? 'form-control is-invalid' : ''
+      "
+    />
+    <div class="invalid-feedback">
+      png or jpg image only please.
+    </div>
+    <div
+      class="container-img"
+      *ngIf="previewScreenshot && newTodos.get('screenshot').valid"
+    >
+      <img
+        [src]="previewScreenshot"
+        [alt]="newTodos.get('description').value"
+      />
+    </div>
   </div>
 
   <div class="form-group">

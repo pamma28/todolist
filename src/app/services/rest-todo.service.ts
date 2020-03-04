@@ -29,7 +29,7 @@ export class RestTodoService {
   }
 
   patchTodo(todo: InstanceTodo) {
-    return this.http.patch(this.urlApi, todo, {
+    return this.http.patch(this.urlApi + todo.id, todo, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),

@@ -6,6 +6,7 @@ import * as moment from 'moment';
 import { CanComponentDeactivate } from './can-deactivate-guard.interface';
 import { Observable } from 'rxjs';
 import { RestTodoService } from '../services/rest-todo.service';
+import { MimeValidators } from './mime-type.validator';
 
 @Component({
   selector: 'app-add-todo',
@@ -50,7 +51,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
             .format('YYYY-MM-DD'),
           [Validators.required, this.allowedDates],
         ),
-        screenshot: new FormControl(null, [], []),
+        screenshot: new FormControl(null, [], [MimeValidators]),
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });

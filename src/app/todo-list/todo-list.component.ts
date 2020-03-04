@@ -106,7 +106,7 @@ it has custom directive, 'appHover' to show todo has done with springgreen backg
  */
 export class TodoListComponent implements OnInit, OnDestroy {
   user = [];
-  todos: InstanceTodo[];
+  todos: InstanceTodo[] = [];
   faTrash = faTrash;
   faSortAmountDown = faSortAmountDown;
   faSortAmountUp = faSortAmountUp;
