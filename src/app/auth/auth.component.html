@@ -75,7 +75,7 @@
   <div class="text-right">
     <input
       type="submit"
-      value="Sign in"
+      value="{{ signin ? 'Sign in' : 'Sign up' }}"
       class="btn btn-primary"
       [disabled]="!signForm.valid"
     />

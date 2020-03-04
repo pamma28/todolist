@@ -8,7 +8,7 @@ import { AuthComponent } from './auth/auth.component';
 import { AuthGuard } from './services/auth-guard.service';
 
 const routes: Routes = [
-  { path: '', component: TodoListComponent },
+  { path: '', component: TodoListComponent, canActivate: [AuthGuard] },
   { path: 'auth/:page', component: AuthComponent },
   {
     path: 'add',
