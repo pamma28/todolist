@@ -2,9 +2,12 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Subscription, Subject, Observable } from 'rxjs';
 import { User } from '../auth/user.interface';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class RestTodosService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
+    const tokenActive = localStorage.getItem('token');
+    this.token = tokenActive ? tokenActive : null;
     this.userLoggedIn.next(false);
     this.userToken.next(this.token);
   }
@@ -58,6 +61,7 @@ export class RestTodosService {
   }
 
   setToken(token: string) {
+    localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);
   }
@@ -68,5 +72,21 @@ export class RestTodosService {
 
   getToken() {
     return this.token;
+  }
+
+  redirectHome() {
+    if (this.token !== null) {
+      this.userToken.next(this.token);
+      this.userLoggedIn.next(true);
+      this.router.navigate(['/home']);
+    }
+  }
+
+  logout() {
+    localStorage.setItem('token', null);
+    this.token = null;
+    this.userToken.next(null);
+    this.userLoggedIn.next(false);
+    this.router.navigate(['/auth/login']);
   }
 }

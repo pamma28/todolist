@@ -48,6 +48,8 @@ export class AuthComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.restServices.redirectHome();
+
     this.route.params.subscribe((params: Params) => {
       switch (params.page) {
         case 'signup':
@@ -62,13 +64,12 @@ export class AuthComponent implements OnInit {
           this.router.navigate(['/404']);
           break;
       }
-      console.log(this.signin);
       this.notification = undefined;
 
       this.signForm
         .get('name')
         .setValidators(
-          !this.signin ? [Validators.required, Validators.minLength(4)] : [],
+          this.signin ? [] : [Validators.required, Validators.minLength(4)],
         );
 
       this.signForm.get('password').setValidators(
@@ -108,7 +109,7 @@ export class AuthComponent implements OnInit {
           (dataToken: { access_token: string }) => {
             if (dataToken) {
               this.restServices.setToken(dataToken.access_token);
-              this.router.navigate(['/']);
+              this.router.navigate(['/', 'home']);
             } else {
               // error handling
               this.notification = {
@@ -118,7 +119,6 @@ export class AuthComponent implements OnInit {
             }
           },
           errSignin => {
-            console.log(errSignin);
             this.notification = {
               type: 'failed',
               message: errSignin.error.message,

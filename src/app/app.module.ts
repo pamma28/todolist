@@ -41,7 +41,6 @@ import { AuthInterceptor } from './auth/auth.interceptor';
   ],
   providers: [
     StaticServices,
-    CanDeactivateGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
