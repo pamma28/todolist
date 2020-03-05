@@ -118,6 +118,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     message: string;
   };
   sortDeadline = false;
+  isLoading = false;
   newTodo = true;
   newId: any[] = [];
   observerNewData: Subscription;
@@ -140,6 +141,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
     this.newId = this.staticServices.getNewDataList();
     // this.newId = ['88056a30-5ded-11ea-930d-639fc8d7422d'];
 
+    this.isLoading = true;
     this.restServices
       .getTodo()
       .pipe(
@@ -173,6 +175,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
       )
       .subscribe(responseData => {
         this.todos = responseData;
+        this.isLoading = false;
       });
   }
 

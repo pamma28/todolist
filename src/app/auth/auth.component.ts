@@ -105,7 +105,10 @@ export class AuthComponent implements OnInit {
         .subscribe(
           (dataToken: { access_token: string }) => {
             if (dataToken) {
-              this.restServices.setToken(dataToken.access_token);
+              this.restServices.setToken(
+                dataToken.access_token,
+                this.signForm.get('email').value,
+              );
             } else {
               // error handling
               this.notification = {

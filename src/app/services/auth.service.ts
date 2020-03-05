@@ -15,13 +15,18 @@ export class AuthService {
     this.token = tokenActive ? tokenActive : null;
     this.userLoggedIn.next(false);
     this.userToken.next(this.token);
+    const userName = localStorage.getItem('name');
+    this.name = userName;
+    userName ? this.userName.next(null) : this.userName.next(userName);
   }
   urlApi = 'https://cdc-todo-be.herokuapp.com/';
   private token = null;
   private expiredTime: number;
+  private name = null;
   subscription = Subscription;
   private userLoggedIn = new Subject<boolean>();
   private userToken = new Subject();
+  private userName = new Subject();
 
   signIn(user: User) {
     return this.http.post(
@@ -62,21 +67,32 @@ export class AuthService {
     );
   }
 
-  obsUserToken() {
-    return this.userToken.asObservable();
-  }
-
-  setToken(token: string) {
+  setToken(token: string, email?: string) {
     this.token = token;
     this.expiredTime = new Date().getTime() + 60 * 60 * 1000; // add one hour
+    // get name
+    this.http.get(this.urlApi + 'users/').subscribe((users: any[]) => {
+      const user = users.find(dt => dt.email === email);
+      this.name = user.name;
+      localStorage.setItem('name', this.name);
+      this.userName.next(this.name);
+    });
     localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);
     this.router.navigate(['/home']);
   }
 
+  obsUserToken() {
+    return this.userToken.asObservable();
+  }
+
   obsUserLoggedIn(): Observable<boolean> {
     return this.userLoggedIn.asObservable();
+  }
+
+  obsUserName(): Observable<any> {
+    return this.userName.asObservable();
   }
 
   getToken() {
@@ -86,6 +102,7 @@ export class AuthService {
   redirectHome() {
     if (this.token !== null) {
       this.userToken.next(this.token);
+      this.userName.next(this.name);
       this.userLoggedIn.next(true);
       this.router.navigate(['/home']);
     }
@@ -94,8 +111,14 @@ export class AuthService {
   logout() {
     localStorage.clear();
     this.token = null;
+    this.name = null;
     this.userToken.next(null);
+    this.userName.next(null);
     this.userLoggedIn.next(false);
     this.router.navigate(['/auth/login']);
+  }
+
+  getUserName() {
+    return this.name;
   }
 }

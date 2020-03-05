@@ -12,10 +12,14 @@ export class NavbarComponent implements OnInit {
   constructor(private restService: AuthService, private router: Router) {}
   userLoggedIn = false;
   faPoweOff = faPowerOff;
+  name: string;
   ngOnInit() {
     this.userLoggedIn = this.restService.getToken() !== null ? true : false;
     this.restService.obsUserLoggedIn().subscribe(loggedIn => {
       this.userLoggedIn = loggedIn;
+    });
+    this.restService.obsUserName().subscribe(userName => {
+      this.name = userName;
     });
   }
 

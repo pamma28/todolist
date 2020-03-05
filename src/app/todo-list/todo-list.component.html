@@ -18,11 +18,11 @@
   </p> -->
 </div>
 <div class="list-group">
-  <p class="lead text-center empty-state" *ngIf="todos.length === 0">
+  <p class="lead text-center empty-state" *ngIf="todos.length === 0 && !isLoading">
     No todo list yet
   </p>
 
-  <div class="text-center">
+  <div class="text-center" *ngIf="isLoading">
     <div
       class="spinner-border"
       style="width: 3rem; height: 3rem;"
