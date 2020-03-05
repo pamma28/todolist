@@ -37,6 +37,7 @@ export class AuthComponent implements OnInit {
     message: string;
   };
   signin = true;
+  isLoading = false;
 
   public static matchValues(
     matchTo: string,
@@ -94,6 +95,7 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit() {
+    this.isLoading = true;
     if (this.signin) {
       // logic if login
       const validSignin = false;
@@ -110,6 +112,7 @@ export class AuthComponent implements OnInit {
                 this.signForm.get('email').value,
               );
             } else {
+              this.isLoading = false;
               // error handling
               this.notification = {
                 type: 'failed',
@@ -118,9 +121,12 @@ export class AuthComponent implements OnInit {
             }
           },
           errSignin => {
+            this.isLoading = false;
             this.notification = {
               type: 'failed',
-              message: errSignin.error.message,
+              message: errSignin.error.message
+                ? errSignin.error.message
+                : errSignin.error.error,
             };
           },
         );
@@ -134,6 +140,7 @@ export class AuthComponent implements OnInit {
         })
         .subscribe(
           dataSignUp => {
+            this.isLoading = false;
             if (dataSignUp) {
               // this.router.navigate(['auth/login']);
               this.notification = {
@@ -149,9 +156,12 @@ export class AuthComponent implements OnInit {
             }
           },
           errSignUp => {
+            this.isLoading = false;
             this.notification = {
               type: 'failed',
-              message: errSignUp.error.message,
+              message: errSignUp.error.message
+                ? errSignUp.error.message
+                : errSignUp.error.error,
             };
           },
         );
