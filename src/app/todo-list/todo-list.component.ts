@@ -218,7 +218,7 @@ export class TodoListComponent implements OnInit, OnDestroy {
 
   onSwitchDone(todo: InstanceTodo) {
     todo.done = !todo.done;
-    this.staticServices.updateData(todo).subscribe(data => {
+    this.restServices.patchTodo(todo).subscribe(data => {
       this.todos[this.todos.indexOf(todo)].done = todo.done;
     });
   }
