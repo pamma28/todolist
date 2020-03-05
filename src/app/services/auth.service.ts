@@ -6,6 +6,11 @@ import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
+    // check expired token
+    if (this.expiredTime < new Date().getTime()) {
+      this.logout();
+    }
+
     const tokenActive = localStorage.getItem('token');
     this.token = tokenActive ? tokenActive : null;
     this.userLoggedIn.next(false);
@@ -13,6 +18,7 @@ export class AuthService {
   }
   urlApi = 'https://cdc-todo-be.herokuapp.com/';
   private token = null;
+  private expiredTime: number;
   subscription = Subscription;
   private userLoggedIn = new Subject<boolean>();
   private userToken = new Subject();
@@ -62,6 +68,7 @@ export class AuthService {
 
   setToken(token: string) {
     this.token = token;
+    this.expiredTime = new Date().getTime() + 60 * 60 * 1000; // add one hour
     localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);

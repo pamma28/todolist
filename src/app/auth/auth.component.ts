@@ -23,7 +23,10 @@ export class AuthComponent implements OnInit {
     this.signForm = new FormGroup({
       name: new FormControl(''),
       email: new FormControl('', [Validators.required, Validators.email], []),
-      password: new FormControl(''),
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(8),
+      ]),
       repassword: new FormControl(''),
     });
   }
@@ -54,11 +57,9 @@ export class AuthComponent implements OnInit {
       switch (params.page) {
         case 'signup':
           this.signin = false;
-          this.signForm.reset();
           break;
         case 'login':
           this.signin = true;
-          this.signForm.reset();
           break;
         default:
           this.router.navigate(['/404']);
@@ -66,34 +67,29 @@ export class AuthComponent implements OnInit {
       }
       // console.log(this.signin);
       this.notification = undefined;
+      this.signForm.reset();
 
-      this.signForm
-        .get('name')
-        .setValidators(
-          this.signin ? [] : [Validators.required, Validators.minLength(4)],
-        );
+      if (this.signin) {
+        this.signForm.get('name').clearValidators();
+        this.signForm.get('repassword').clearValidators();
+      } else {
+        this.signForm
+          .get('name')
+          .setValidators([Validators.required, Validators.minLength(4)]);
 
-      this.signForm.get('password').setValidators(
-        this.signin
-          ? [Validators.required, Validators.minLength(8)]
-          : [
-              Validators.required,
-              Validators.minLength(8),
-              // AuthComponent.matchValues('repassword'),
-            ],
-      );
+        this.signForm
+          .get('repassword')
+          .setValidators([
+            Validators.required,
+            Validators.minLength(8),
+            AuthComponent.matchValues('password'),
+          ]);
+      }
 
-      this.signForm
-        .get('repassword')
-        .setValidators(
-          this.signin
-            ? []
-            : [
-                Validators.required,
-                Validators.minLength(8),
-                AuthComponent.matchValues('password'),
-              ],
-        );
+      // tslint:disable-next-line: forin
+      for (const key in this.signForm.controls) {
+        this.signForm.get(key).updateValueAndValidity();
+      }
     });
   }
 
@@ -136,12 +132,18 @@ export class AuthComponent implements OnInit {
         .subscribe(
           dataSignUp => {
             if (dataSignUp) {
-              this.router.navigate(['auth/login']);
+              // this.router.navigate(['auth/login']);
+              this.notification = {
+                type: 'success',
+                message: 'registration success, you can sign in now',
+              };
+              this.signForm.reset();
+            } else {
+              this.notification = {
+                type: 'failed',
+                message: 'error registration, please try again',
+              };
             }
-            this.notification = {
-              type: 'failed',
-              message: 'error login, please try again',
-            };
           },
           errSignUp => {
             this.notification = {
