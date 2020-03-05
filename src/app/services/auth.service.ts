@@ -6,23 +6,23 @@ import { Router } from '@angular/router';
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
-    // check expired token
-    if (this.expiredTime < new Date().getTime()) {
-      this.logout();
-    }
-
     const tokenActive = localStorage.getItem('token');
-    this.token = tokenActive ? tokenActive : null;
+    if (tokenActive) {
+      this.token = tokenActive;
+      this.initInterval();
+    } else {
+      this.token = null;
+    }
     this.userLoggedIn.next(false);
     this.userToken.next(this.token);
     const userName = localStorage.getItem('name');
     this.name = userName;
-    userName ? this.userName.next(null) : this.userName.next(userName);
+    userName ? this.userName.next(userName) : this.userName.next(null);
   }
   urlApi = 'https://cdc-todo-be.herokuapp.com/';
   private token = null;
   private expiredTime: number;
-  private name = null;
+  private name: string = localStorage.getItem('name');
   subscription = Subscription;
   private userLoggedIn = new Subject<boolean>();
   private userToken = new Subject();
@@ -69,17 +69,19 @@ export class AuthService {
 
   setToken(token: string, email?: string) {
     this.token = token;
-    this.expiredTime = new Date().getTime() + 60 * 60 * 1000; // add one hour
+    this.expiredTime = Date.now() + 60 * 60 * 1000; // add one hour
     // get name
     this.http.get(this.urlApi + 'users/').subscribe((users: any[]) => {
       const user = users.find(dt => dt.email === email);
       this.name = user.name;
       localStorage.setItem('name', this.name);
+      localStorage.setItem('expiredTime', `${this.expiredTime}`);
       this.userName.next(this.name);
     });
     localStorage.setItem('token', token);
     this.userToken.next(token);
     this.userLoggedIn.next(token ? true : false);
+    this.initInterval();
     this.router.navigate(['/home']);
   }
 
@@ -102,7 +104,7 @@ export class AuthService {
   redirectHome() {
     if (this.token !== null) {
       this.userToken.next(this.token);
-      this.userName.next(this.name);
+      // this.userName.next(this.name);
       this.userLoggedIn.next(true);
       this.router.navigate(['/home']);
     }
@@ -120,5 +122,20 @@ export class AuthService {
 
   getUserName() {
     return this.name;
+  }
+
+  checkValidToken() {
+    // check expired token
+    this.expiredTime = +localStorage.getItem('expiredTime');
+    if (this.expiredTime < Date.now()) {
+      this.logout();
+    }
+    const minute = this.expiredTime - Date.now();
+  }
+
+  initInterval() {
+    setInterval(() => {
+      this.checkValidToken();
+    }, 5000); // 5s
   }
 }
