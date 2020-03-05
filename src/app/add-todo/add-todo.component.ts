@@ -51,7 +51,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
             .format('YYYY-MM-DD'),
           [Validators.required, this.allowedDates],
         ),
-        screenshot: new FormControl(null, [], [MimeValidators]),
+        snapshot: new FormControl(null, [], [MimeValidators]),
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });
@@ -63,7 +63,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
           Validators.maxLength(100),
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
-        screenshot: new FormControl(null, [], []),
+        snapshot: new FormControl(null, [], []),
         done: new FormControl('', []),
         id: new FormControl(''),
       });
@@ -73,6 +73,26 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   onSubmit() {
     const dt = this.newTodos.value;
     if (dt.id) {
+      // check done and image attachment
+      if (
+        this.newTodos.get('done').value === true &&
+        this.newTodos.get('snapshot').value !== null
+      ) {
+        console.log(this.newTodos.get('snapshot').value);
+        // upload the image
+        this.restServices
+          .completedTodo(this.newTodos.value, this.previewScreenshot)
+          .subscribe(
+            (resData: InstanceTodo) => {
+              if (resData.snapshot) {
+              }
+            },
+            errUpload => {
+              console.log(errUpload);
+            },
+          );
+      }
+
       // logic edit
       this.restServices
         .patchTodo({
@@ -145,14 +165,15 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
 
   onImageSelected(event: Event) {
     const image = (event.target as HTMLInputElement).files[0];
-    this.newTodos.patchValue({ screenshot: image });
-    this.newTodos.get('screenshot').updateValueAndValidity();
+    this.newTodos.patchValue({ snapshot: image });
+    this.newTodos.get('snapshot').updateValueAndValidity();
 
     const img = new FileReader();
     img.onload = () => {
       this.previewScreenshot = img.result;
     };
     img.readAsDataURL(image);
+    // this.uploadFilePath = img.readAsDataURL(image);
   }
 
   onSuccessAddition(id?: string) {

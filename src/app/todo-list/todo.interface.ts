@@ -3,5 +3,5 @@ export interface InstanceTodo {
   description?: string;
   deadline?: Date;
   done?: boolean;
-  screenshot?: string;
+  snapshot?: string;
 }

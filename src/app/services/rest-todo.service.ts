@@ -36,10 +36,12 @@ export class RestTodoService {
     });
   }
 
-  completedTodo(todo: InstanceTodo) {
-    return this.http.post(this.urlApi + +todo.id, new FormData(), {
+  completedTodo(todo: InstanceTodo, path: string | ArrayBuffer) {
+    const formData = new FormData();
+    formData.append('snapshot', todo.snapshot, path as string);
+    return this.http.post(this.urlApi + todo.id + '/complete', formData, {
       headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
+        mimeType: 'multipart/form-data',
       }),
     });
   }

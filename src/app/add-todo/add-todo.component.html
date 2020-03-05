@@ -18,7 +18,10 @@
       No more than 100 character please.
     </div>
   </div>
-  <div class="form-group" *ngIf="editForm">
+  <div
+    class="form-group"
+    *ngIf="editForm && newTodos.get('done').value === true"
+  >
     <button
       class="btn btn-info btn-sm"
       type="button"
@@ -31,7 +34,7 @@
       (change)="onImageSelected($event)"
       #fileScreenshot
       [ngClass]="
-        newTodos.get('screenshot').invalid ? 'form-control is-invalid' : ''
+        newTodos.get('snapshot').invalid ? 'form-control is-invalid' : ''
       "
     />
     <div class="invalid-feedback">
@@ -39,7 +42,7 @@
     </div>
     <div
       class="container-img"
-      *ngIf="previewScreenshot && newTodos.get('screenshot').valid"
+      *ngIf="previewScreenshot && newTodos.get('snapshot').valid"
     >
       <img
         [src]="previewScreenshot"
