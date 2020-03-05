@@ -40,6 +40,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     if (history.state.todo) {
       this.editForm = true;
       const editData: InstanceTodo = history.state.todo;
+      this.previewScreenshot = editData.snapshot;
       this.newTodos = new FormGroup({
         description: new FormControl(editData.description, [
           Validators.required,
@@ -83,10 +84,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         this.restServices
           .completedTodo(this.newTodos.value, this.previewScreenshot)
           .subscribe(
-            (resData: InstanceTodo) => {
-              if (resData.snapshot) {
-              }
-            },
+            (resData: InstanceTodo) => {},
             errUpload => {
               console.log(errUpload);
             },
@@ -107,7 +105,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               type: 'success',
               message: 'Todos has been updated',
             };
-            this.editForm = false;
+            this.editForm = true;
           },
           errorMessage => {
             this.notification = {

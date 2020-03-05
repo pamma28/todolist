@@ -10,5 +10,6 @@ input[type='file'] {
 }
 
 .container-img img {
+  margin: 10px 0px;
   height: 100%;
 }
