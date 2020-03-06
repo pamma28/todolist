@@ -14,7 +14,31 @@
           : ''
       "
     ></textarea>
-    <div class="invalid-feedback">
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        newTodos.get('description').invalid &&
+        !!newTodos.get('description').errors.required
+      "
+    >
+      Description required.
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        newTodos.get('description').invalid &&
+        !!newTodos.get('description').errors.minlength
+      "
+    >
+      Shoud be more than 5 chars
+    </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        newTodos.get('description').invalid &&
+        !!newTodos.get('description').errors.maxlength
+      "
+    >
       No more than 100 character please.
     </div>
   </div>
@@ -37,9 +61,25 @@
         newTodos.get('snapshot').invalid ? 'form-control is-invalid' : ''
       "
     />
-    <div class="invalid-feedback">
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        newTodos.get('snapshot').invalid &&
+        !!!newTodos.get('snapshot').errors.maxFileSize
+      "
+   k >
       png or jpg image only please.
     </div>
+    <div
+      class="invalid-feedback"
+      *ngIf="
+        newTodos.get('snapshot').invalid &&
+        !!newTodos.get('snapshot').errors.maxFileSize
+      "
+    >
+      image size should less than 200kb
+    </div>
+
     <div
       class="container-img"
       *ngIf="previewScreenshot && newTodos.get('snapshot').valid"

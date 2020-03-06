@@ -4,7 +4,7 @@ import { StaticServices } from './../services/static-data.service';
 import { InstanceTodo } from './../todo-list/todo.interface';
 import * as moment from 'moment';
 import { CanComponentDeactivate } from './can-deactivate-guard.interface';
-import { Observable } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import { RestTodoService } from '../services/rest-todo.service';
 import { MimeValidators } from './mime-type.validator';
 
@@ -40,10 +40,12 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     if (history.state.todo) {
       this.editForm = true;
       const editData: InstanceTodo = history.state.todo;
-      this.previewScreenshot = editData.snapshot;
+      this.previewScreenshot = editData.snapshot ? editData.snapshot : null;
+
       this.newTodos = new FormGroup({
         description: new FormControl(editData.description, [
           Validators.required,
+          Validators.minLength(5),
           Validators.maxLength(100),
         ]),
         deadline: new FormControl(
@@ -52,7 +54,11 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
             .format('YYYY-MM-DD'),
           [Validators.required, this.allowedDates],
         ),
-        snapshot: new FormControl(null, [], [MimeValidators]),
+        snapshot: new FormControl(
+          null,
+          [this.imgSizeValidator],
+          [MimeValidators],
+        ),
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });
@@ -61,6 +67,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
       this.newTodos = new FormGroup({
         description: new FormControl('', [
           Validators.required,
+          Validators.minLength(5),
           Validators.maxLength(100),
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
@@ -176,5 +183,18 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
 
   onSuccessAddition(id?: string) {
     this.staticServices.addNewDataList(id);
+  }
+
+  imgSizeValidator(control: FormControl): { [key: string]: any } {
+    if (!control.value) {
+      return null;
+    }
+
+    const file = control.value as File;
+    // 200kb max size
+    if (file.size > 200 * 2 ** 10) {
+      return { maxFileSize: true };
+    }
+    return null;
   }
 }
