@@ -7,84 +7,88 @@
 </div>
 <div *ngIf="!isLoading">
   <form [formGroup]="signForm" (ngSubmit)="onSubmit()">
-    <div class="form-group row" *ngIf="!signin">
-      <div class="col-sm-12">
-        <input
-          placeholder="your name"
-          formControlName="name"
-          class="form-control"
-          [ngClass]="
-            signForm.get('name').invalid && signForm.get('name').touched
-              ? 'is-invalid'
-              : ''
-          "
-        />
-        <div class="invalid-feedback">
-          Provide valid name please.
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-12">
-        <input
-          placeholder="your email"
-          formControlName="email"
-          class="form-control"
-          [ngClass]="
-            signForm.get('email').invalid && signForm.get('email').touched
-              ? 'is-invalid'
-              : ''
-          "
-        />
-        <div class="invalid-feedback">
-          Provide valid email please.
-        </div>
-      </div>
-    </div>
-    <div class="form-group row">
-      <div class="col-sm-12">
-        <input
-          placeholder="your password"
-          type="password"
-          formControlName="password"
-          class="form-control"
-          [ngClass]="
-            signForm.get('password').invalid && signForm.get('password').touched
-              ? 'is-invalid'
-              : ''
-          "
-        />
-        <div class="invalid-feedback">
-          Valid password please.
-        </div>
-      </div>
-    </div>
-    <div class="form-group row" *ngIf="!signin">
-      <div class="col-sm-12">
-        <input
-          placeholder="retype your password"
-          type="password"
-          formControlName="repassword"
-          class="form-control"
-          [ngClass]="
-            signForm.get('repassword').invalid &&
-            signForm.get('repassword').touched
-              ? 'is-invalid'
-              : ''
-          "
-        />
-        <div class="invalid-feedback">
-          Match password please.
-        </div>
-      </div>
-    </div>
-    <div class="text-right">
+    <mat-form-field *ngIf="!signin" class="full-width">
+      <mat-label>
+        your name
+      </mat-label>
       <input
-        type="submit"
-        value="{{ signin ? 'Sign in' : 'Sign up' }}"
-        class="btn btn-primary"
-        [disabled]="!signForm.valid"
+        matInput
+        placeholder="your name"
+        formControlName="name"
+        class="form-control"
       />
+      <mat-error
+        *ngIf="signForm.get('name').invalid && signForm.get('name').touched"
+      >
+        Provide valid name please.
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="full-width">
+      <mat-label>
+        Your email
+      </mat-label>
+      <input
+        matInput
+        placeholder="your email"
+        formControlName="email"
+        class="form-control"
+      />
+      <mat-error
+        *ngIf="signForm.get('email').invalid && signForm.get('email').touched"
+      >
+        Provide valid email please.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>
+        Your password
+      </mat-label>
+      <input
+        matInput
+        placeholder="your password"
+        type="password"
+        formControlName="password"
+        class="form-control"
+      />
+      <mat-error
+        *ngIf="
+          signForm.get('password').invalid && signForm.get('password').touched
+        "
+      >
+        Valid password please</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field  *ngIf="!signin" class="full-width">
+      <mat-label>
+        Re-type your password
+      </mat-label>
+      <input
+        matInput
+        placeholder="retype your password"
+        type="password"
+        formControlName="repassword"
+        class="form-control"
+      />
+      <mat-error
+        *ngIf="
+          signForm.get('repassword').invalid &&
+          signForm.get('repassword').touched
+        "
+      >
+        Match password please.</mat-error
+      >
+    </mat-form-field>
+
+    <div flexbox>
+      <button
+        mat-raised-button
+        type="submit"
+        color="primary"
+        [disabled]="!signForm.valid"
+      >
+        {{ signin ? 'Sign in' : 'Sign up' }}
+      </button>
     </div>
   </form>
 </div>
