@@ -5,11 +5,12 @@
     <span class="sr-only">Loading...</span>
   </div>
 </div>
-<div *ngIf="!isLoading">
+
+<section fxLayout="column" *ngIf="!isLoading">
   <form [formGroup]="signForm" (ngSubmit)="onSubmit()">
     <mat-form-field *ngIf="!signin" class="full-width">
       <mat-label>
-        your name
+        Your name
       </mat-label>
       <input
         matInput
@@ -59,7 +60,7 @@
         Valid password please</mat-error
       >
     </mat-form-field>
-    <mat-form-field  *ngIf="!signin" class="full-width">
+    <mat-form-field *ngIf="!signin" class="full-width">
       <mat-label>
         Re-type your password
       </mat-label>
@@ -80,7 +81,7 @@
       >
     </mat-form-field>
 
-    <div flexbox>
+    <div fxLayoutAlign="flex-end flex-end">
       <button
         mat-raised-button
         type="submit"
@@ -91,4 +92,4 @@
       </button>
     </div>
   </form>
-</div>
+</section>
