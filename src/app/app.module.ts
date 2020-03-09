@@ -12,13 +12,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ProgressTodoComponent } from './progress-todo/progress-todo.component';
 import { AlertNotifComponent } from './alert-notif/alert-notif.component';
-import { CanDeactivateGuard } from './add-todo/can-deactivate-guard.service';
 import { HoverElementDirective } from './add-todo/style-directive';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
 import { StaticServices } from './services/static-data.service';
 import { AuthService } from './services/auth.service';
 import { AuthInterceptor } from './auth/auth.interceptor';
+import { MaterialModule } from './material.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,8 +38,10 @@ import { AuthInterceptor } from './auth/auth.interceptor';
     ReactiveFormsModule,
     FontAwesomeModule,
     BrowserAnimationsModule,
+    MaterialModule,
   ],
   providers: [
+    AuthService,
     StaticServices,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
