@@ -1,87 +1,102 @@
 <app-alert-notif [notification]="notification"></app-alert-notif>
+
 <app-progress-todo
   [totalDone]="totalDone"
   [totalNotDone]="totalNotDone"
 ></app-progress-todo>
-<button class="btn btn-primary btn-lg btn-block" (click)="onAddTodo()">
-  Add more todos
-</button>
-<div class="text-right">
-  <p (click)="onChangeSortData()">
-    Sort by Deadline
-    <fa-icon
-      [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
-    ></fa-icon>
-  </p>
-  <!-- <p (click)="onAnimate()">
+<section fxLayout="column" fxLayoutAlign="center center">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="onAddTodo()"
+    fxFlexAlign="stretch"
+  >
+    Add more todos
+  </button>
+  <div fxFlexAlign="flex-end">
+    <p (click)="onChangeSortData()">
+      Sort by Deadline
+      <fa-icon
+        [icon]="sortDeadline ? faSortAmountDown : faSortAmountUp"
+      ></fa-icon>
+    </p>
+    <!-- <p (click)="onAnimate()">
     <fa-icon [icon]="faEdit"></fa-icon>
   </p> -->
-</div>
-<p
-  class="lead text-center empty-state"
-  *ngIf="todos.length === 0 && !isLoading"
->
-  No todo list yet
-</p>
-<div class="text-center" *ngIf="isLoading">
-  <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
-    <span class="sr-only">Loading...</span>
   </div>
-</div>
-<div class="list-group" *ngIf="!isLoading">
-  <a
-    *ngFor="let todo of todos; let i = index"
-    class="list-group-item list-group-item-action"
-    [appHover]="todo.done"
-    [@newDeletedAnimation]
-  >
-    <div>
-      <div
-        [@newAddedAnimation]
-        [@.disabled]="!newId.includes(todo.id)"
-        (@newAddedAnimation.done)="resetDataAnimation($event)"
-      >
-        <div class="d-flex w-100 justify-content-between">
-          <h5 class="mb-1"></h5>
-          <small class="text-center">{{ todo.deadline | date }}</small>
-          <div
-            class="badge text-wrap text-left"
-            [ngClass]="todo.done ? 'badge-success' : 'badge-warning'"
-          >
-            {{ todo.done ? 'Done' : 'Not Done' }}
-          </div>
-        </div>
-        <p class="mb-1" *ngIf="!todo.done">
-          {{ todo.description }}
-        </p>
-        <p class="mb-1">
-          <del *ngIf="todo.done">{{ todo.description }}</del>
-        </p>
+  <div class="empty-state" *ngIf="todos.length === 0 && !isLoading">
+    No todo list yet
+  </div>
+  <div fxFlexAlign="center" *ngIf="isLoading">
+    <mat-spinner diameter="100"> Loading...</mat-spinner>
+  </div>
+</section>
 
-        <div class="text-right">
-          <div class="btn-group" role="group" aria-label="Edit Delete Group">
-            <!-- <div class="input-group"> -->
-            <div class="input-group-prepend ">
-              <div class="input-group-text">
-                <input
-                  type="checkbox"
-                  aria-label="Checkbox Done Not Done"
-                  [checked]="todo.done"
-                  (click)="onSwitchDone(todo)"
-                />
-              </div>
+<section *ngIf="!isLoading">
+  <mat-list role="list" fxLayout="column" fxLayoutGap="5px">
+    <mat-list-item
+      role="listitem"
+      fxFill
+      *ngFor="let todo of todos; let i = index"
+      [appHover]="todo.done"
+    >
+      <div fxFill [@newDeletedAnimation] fxFlexAlign="center center">
+        <div
+          fxFlex
+          [@newAddedAnimation]
+          [@.disabled]="!newId.includes(todo.id)"
+          (@newAddedAnimation.done)="resetDataAnimation($event)"
+        >
+          <div fxLayout="row" fxLayoutGap="3px">
+            <small fxFlex="100" fxLayoutAlign="center center">{{
+              todo.deadline | date
+            }}</small>
+
+            <div fxLayoutAlign="end center" fxFlex="15">
+              <mat-icon [color]="todo.done ? 'primary' : 'accent'">{{
+                todo.done ? 'check_circle' : 'highlight_off'
+              }}</mat-icon
+              ><small
+                ><em>{{ todo.done ? 'Done' : 'Not Done' }}</em></small
+              >
             </div>
-            <!-- </div> -->
+            <mat-slide-toggle
+              fxLayoutAlign="center center"
+              [checked]="todo.done"
+              (click)="onSwitchDone(todo)"
+              color="primary"
+            >
+            </mat-slide-toggle>
+          </div>
+          <div>
+            <p *ngIf="!todo.done">
+              {{ todo.description }}
+            </p>
+            <p class="mb-1" *ngIf="todo.done">
+              <del>{{ todo.description }}</del>
+            </p>
+          </div>
+          <div fxLayout="row" fxLayoutAlign="flex-end center">
+            <!-- <input
+              type="checkbox"
+              aria-label="Checkbox Done Not Done"
+              [checked]="todo.done"
+              (click)="onSwitchDone(todo)"
+            /> -->
+
             <button
+              mat-raised-button
+              color="info"
               type="button"
-              class="btn btn-outline-primary btn-sm"
               (click)="onEditData(todo)"
             >
               <fa-icon [icon]="faEdit"></fa-icon>
             </button>
+
             <button
               type="button"
-              class="btn btn-outline-danger btn-sm"
+              mat-raised-button
+              color="warn"
               (click)="onConfirmDelete(todo)"
             >
               <fa-icon [icon]="faTrash"></fa-icon>
@@ -89,6 +104,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </a>
-</div>
+    </mat-list-item>
+  </mat-list>
+</section>

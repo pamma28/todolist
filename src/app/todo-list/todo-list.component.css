@@ -5,4 +5,9 @@
   opacity: 0.3;
   padding: 5px;
   font-weight: bold;
+  text-align: center;
+}
+
+.mat-list-item {
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
 }
