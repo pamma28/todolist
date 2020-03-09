@@ -1,50 +1,60 @@
-<ul class="nav nav-pills nav-fill" *ngIf="userLoggedIn">
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      routerLink="/home"
-      >Home</a
-    >
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
-      >Edit Todo</a
-    >
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLinkActive="active" routerLink="/add">Add Todo</a>
-  </li>
-  <!-- <li class="nav-item">
+<section fxLayout fxFlexAlign="center center">
+  <ul class="nav nav-pills nav-fill" *ngIf="userLoggedIn">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/home"
+        >Home</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
+        >Edit Todo</a
+      >
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLinkActive="active" routerLink="/add"
+        >Add Todo</a
+      >
+    </li>
+    <!-- <li class="nav-item">
     <a class="nav-link" routerLinkActive="active" (click)="doLogout()"
       >Logout</a
     >
   </li> -->
-</ul>
+  </ul>
+  <div class="text-right" *ngIf="userLoggedIn">
+    <small>
+      Hello, {{ name }}.
+      <span class="text-danger"
+        ><b
+          >Logout <fa-icon [icon]="faPoweOff" (click)="doLogout()"></fa-icon></b
+      ></span>
+    </small>
+  </div>
 
-<ul class="nav nav-pills nav-fill" *ngIf="!userLoggedIn">
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-      routerLink="/auth/login"
-      >Sign in</a
-    >
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" routerLinkActive="active" routerLink="/auth/signup"
-      >Sign up</a
-    >
-  </li>
-</ul>
-<div class="text-right" *ngIf="userLoggedIn">
-  <small>
-    Hello, {{ name }}.
-    <span class="text-danger"
-      ><b>Logout <fa-icon [icon]="faPoweOff" (click)="doLogout()"></fa-icon></b
-    ></span>
-  </small>
-</div>
+  <div fxLayoutAlign="center center">
+    <nav mat-tab-nav-bar *ngIf="!userLoggedIn">
+      <a
+        mat-tab-link
+        [routerLinkActiveOptions]="{ exact: true }"
+        routerLink="/auth/login"
+        routerLinkActive
+        #rla="routerLinkActive"
+        [active]="rla.isActive"
+        >Sign in</a
+      >
+      <a
+        mat-tab-link
+        routerLink="/auth/signup"
+        routerLinkActive
+        #rla2="routerLinkActive"
+        [active]="rla2.isActive"
+        >Sign up</a
+      >
+    </nav>
+  </div>
+</section>
 <hr class="tight-top" />
