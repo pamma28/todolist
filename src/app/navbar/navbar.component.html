@@ -1,41 +1,36 @@
-<section fxLayout fxFlexAlign="center center">
-  <ul class="nav nav-pills nav-fill" *ngIf="userLoggedIn">
-    <li class="nav-item">
+<section fxLayout="column">
+  <div fxLayoutAlign="center center">
+    <nav mat-tab-nav-bar *ngIf="userLoggedIn">
       <a
+        mat-tab-link
         class="nav-link"
-        routerLinkActive="active"
+        routerLinkActive
         [routerLinkActiveOptions]="{ exact: true }"
         routerLink="/home"
+        #rlaHome="routerLinkActive"
+        [active]="rlaHome.isActive"
         >Home</a
       >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link disabled" routerLinkActive="active" routerLink="/edit"
+      <a
+        mat-tab-link
+        [disabled]="true"
+        routerLinkActive="active"
+        routerLink="/edit"
+        #rlaEdit="routerLinkActive"
+        [active]="rlaEdit.isActive"
         >Edit Todo</a
       >
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" routerLinkActive="active" routerLink="/add"
+      <a
+        mat-tab-link
+        class="nav-link"
+        routerLinkActive="active"
+        routerLink="/add"
+        #rlaAdd="routerLinkActive"
+        [active]="rlaAdd.isActive"
         >Add Todo</a
       >
-    </li>
-    <!-- <li class="nav-item">
-    <a class="nav-link" routerLinkActive="active" (click)="doLogout()"
-      >Logout</a
-    >
-  </li> -->
-  </ul>
-  <div class="text-right" *ngIf="userLoggedIn">
-    <small>
-      Hello, {{ name }}.
-      <span class="text-danger"
-        ><b
-          >Logout <fa-icon [icon]="faPoweOff" (click)="doLogout()"></fa-icon></b
-      ></span>
-    </small>
-  </div>
+    </nav>
 
-  <div fxLayoutAlign="center center">
     <nav mat-tab-nav-bar *ngIf="!userLoggedIn">
       <a
         mat-tab-link
@@ -56,5 +51,14 @@
       >
     </nav>
   </div>
+</section>
+<section fxLayout fxLayoutAlign="flex-end center" *ngIf="userLoggedIn">
+  <small>
+    Hello, {{ name }}.
+    Logout
+    <button mat-icon-button color="warn" (click)="doLogout()">
+      <mat-icon>power_settings_new</mat-icon>
+    </button>
+  </small>
 </section>
 <hr class="tight-top" />

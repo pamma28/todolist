@@ -1,3 +1,8 @@
 .tight-top {
   margin-top: 0px !important;
 }
+
+.mat-tab-label-active.cdk-focused {
+  background-color: #673ab7;
+  color: #fff;
+}
