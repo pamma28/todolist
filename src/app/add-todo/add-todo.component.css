@@ -7,9 +7,14 @@ input[type='file'] {
 .container-img {
   height: 150px;
   width: 500px;
+  margin: 10px 0px;
 }
 
 .container-img img {
-  margin: 10px 0px;
+  margin: 5px 0px;
   height: 100%;
+}
+
+.marginTopBottom {
+  margin: 5px 0px;
 }

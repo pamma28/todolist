@@ -34,6 +34,10 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
   dataSaved = false;
   editForm = false;
   previewScreenshot: string | ArrayBuffer;
+  minDate = moment()
+    .add(1, 'day')
+    .startOf('day')
+    .toDate();
 
   ngOnInit() {
     // edit logic
@@ -46,7 +50,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         description: new FormControl(editData.description, [
           Validators.required,
           Validators.minLength(5),
-          Validators.maxLength(100),
+          Validators.maxLength(30),
         ]),
         deadline: new FormControl(
           moment(editData.deadline)
@@ -68,7 +72,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         description: new FormControl('', [
           Validators.required,
           Validators.minLength(5),
-          Validators.maxLength(100),
+          Validators.maxLength(30),
         ]),
         deadline: new FormControl('', [Validators.required, this.allowedDates]),
         snapshot: new FormControl(null, [], []),
@@ -86,7 +90,6 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         this.newTodos.get('done').value === true &&
         this.newTodos.get('snapshot').value !== null
       ) {
-        console.log(this.newTodos.get('snapshot').value);
         // upload the image
         this.restServices
           .completedTodo(this.newTodos.value, this.previewScreenshot)

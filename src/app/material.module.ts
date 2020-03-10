@@ -9,6 +9,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   imports: [
@@ -22,6 +24,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatBadgeModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   exports: [
     MatButtonModule,
@@ -34,6 +38,8 @@ import { MatBadgeModule } from '@angular/material/badge';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatBadgeModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
 })
 export class MaterialModule {}

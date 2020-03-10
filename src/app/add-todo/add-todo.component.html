@@ -1,53 +1,39 @@
 <app-alert-notif [notification]="notification"></app-alert-notif>
 <h3>What's more next?</h3>
-<form [formGroup]="newTodos" (ngSubmit)="onSubmit()">
-  <div class="form-group">
-    <label for="description">detailing, sometimes useful:</label>
-    <textarea
-      formControlName="description"
-      rows="3"
-      class="form-control"
-      [ngClass]="
-        newTodos.get('description').invalid &&
-        newTodos.get('description').touched
-          ? 'is-invalid'
-          : ''
-      "
-    ></textarea>
-    <div
-      class="invalid-feedback"
+<form [formGroup]="newTodos" (ngSubmit)="onSubmit()" fxLayout="column">
+  <mat-form-field>
+    <mat-label>Detailing, sometimes useful:</mat-label>
+    <textarea matInput formControlName="description" rows="3"></textarea>
+    <mat-error
       *ngIf="
         newTodos.get('description').invalid &&
-        !!newTodos.get('description').errors.required
+        newTodos.get('description').hasError('required')
       "
     >
       Description required.
-    </div>
-    <div
-      class="invalid-feedback"
+    </mat-error>
+    <mat-error
       *ngIf="
         newTodos.get('description').invalid &&
-        !!newTodos.get('description').errors.minlength
+        newTodos.get('description').hasError('minlength')
       "
     >
       Shoud be more than 5 chars
-    </div>
-    <div
-      class="invalid-feedback"
+    </mat-error>
+    <mat-error
       *ngIf="
         newTodos.get('description').invalid &&
-        !!newTodos.get('description').errors.maxlength
+        newTodos.get('description').hasError('maxlength')
       "
     >
-      No more than 100 character please.
-    </div>
-  </div>
-  <div
-    class="form-group"
-    *ngIf="editForm && newTodos.get('done').value === true"
-  >
+      No more than 30 character please.
+    </mat-error>
+  </mat-form-field>
+  <div *ngIf="editForm && newTodos.get('done').value === true">
     <button
-      class="btn btn-info btn-sm"
+      class="marginTopBottom"
+      mat-raised-button
+      color="primary"
       type="button"
       (click)="fileScreenshot.click()"
     >
@@ -61,28 +47,27 @@
         newTodos.get('snapshot').invalid ? 'form-control is-invalid' : ''
       "
     />
-    <div
-      class="invalid-feedback"
+    <mat-error
       *ngIf="
         newTodos.get('snapshot').invalid &&
-        !!!newTodos.get('snapshot').errors.maxFileSize
+        newTodos.get('snapshot').hasError('invalidMimeType')
       "
-   k >
+    >
       png or jpg image only please.
-    </div>
-    <div
-      class="invalid-feedback"
+    </mat-error>
+    <mat-error
       *ngIf="
         newTodos.get('snapshot').invalid &&
-        !!newTodos.get('snapshot').errors.maxFileSize
+        newTodos.get('snapshot').hasError('maxFileSize')
       "
     >
       image size should less than 200kb
-    </div>
+    </mat-error>
 
     <div
       class="container-img"
       *ngIf="previewScreenshot && newTodos.get('snapshot').valid"
+      fxLayoutAlign="top center"
     >
       <img
         [src]="previewScreenshot"
@@ -91,33 +76,37 @@
     </div>
   </div>
 
-  <div class="form-group">
-    <label for="deadline">When the finish line?</label>
+  <mat-form-field>
+    <mat-label>
+      When the finish line?
+    </mat-label>
     <input
-      type="date"
+      matInput
       formControlName="deadline"
-      class="form-control"
-      [ngClass]="
-        newTodos.get('deadline').invalid && newTodos.get('deadline').touched
-          ? 'is-invalid'
-          : ''
-      "
+      [min]="minDate"
+      [matDatepicker]="picker"
     />
-    <div class="invalid-feedback">
-      Valid date please.
-    </div>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error
+      *ngIf="
+        newTodos.get('deadline').invalid && newTodos.get('deadline').touched
+      "
+      >Valid date please.
+    </mat-error>
+  </mat-form-field>
+  <div *ngIf="editForm">
+    <input type="hidden" formControlName="id" />
+    <mat-checkbox formControlName="done" color="primary"
+      >Finished yet?</mat-checkbox
+    >
   </div>
-  <div class="form-group" *ngIf="editForm">
-    <div class="form-check">
-      <input type="checkbox" formControlName="done" class="form-check-input" />
-      <input type="hidden" formControlName="id" />
-      <label for="done" class="form-check-label">Finished yet?</label>
-    </div>
-  </div>
-  <input
+  <button
+    mat-raised-button
+    color="primary"
     type="submit"
-    value="Submit"
-    class="btn btn-primary"
     [disabled]="!newTodos.valid"
-  />
+  >
+    Submit
+  </button>
 </form>
