@@ -27,6 +27,7 @@ export class AuthService {
   private userLoggedIn = new Subject<boolean>();
   private userToken = new Subject();
   private userName = new Subject();
+  interval;
 
   signIn(user: User) {
     return this.http.post(
@@ -112,6 +113,7 @@ export class AuthService {
 
   logout() {
     localStorage.clear();
+    clearInterval(this.interval);
     this.token = null;
     this.name = null;
     this.userToken.next(null);
@@ -134,7 +136,7 @@ export class AuthService {
   }
 
   initInterval() {
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.checkValidToken();
     }, 5000); // 5s
   }
