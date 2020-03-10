@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 import { NavbarComponent } from './navbar/navbar.component';
 import { StaticServices } from './services/static-data.service';
 import { NO_ERRORS_SCHEMA } from '@angular/compiler';
+import { AuthComponent } from './auth/auth.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -16,7 +17,7 @@ describe('AppComponent', () => {
     todoList = staticServices.getData.and.returnValue(of(todoList));
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [AppComponent, NavbarComponent],
+      declarations: [AppComponent, NavbarComponent, AuthComponent],
       providers: [{ provide: StaticServices, useValue: staticServices }],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();

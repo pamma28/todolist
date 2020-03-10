@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators, NgForm, FormGroupDirective } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  NgForm,
+  FormGroupDirective,
+} from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
@@ -67,6 +73,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         done: new FormControl(editData.done, []),
         id: new FormControl(editData.id),
       });
+      this.newTodos.updateValueAndValidity();
     } else {
       // default add
       this.newTodos = new FormGroup({
@@ -83,6 +90,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
         done: new FormControl('', []),
         id: new FormControl(''),
       });
+      this.newTodos.updateValueAndValidity();
     }
   }
 
@@ -142,7 +150,9 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               message: 'Todos has been saved',
             };
             this.newTodos.reset();
-            formDirective.resetForm();
+            if (formDirective) {
+              formDirective.resetForm();
+            }
             this.dataSaved = true;
             // newId broadcast to observable
             this.onSuccessAddition(responseData.id);

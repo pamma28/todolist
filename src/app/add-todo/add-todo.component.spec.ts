@@ -88,7 +88,7 @@ describe('EditTodoComponent', () => {
           description: 'hello world',
           deadline: '2022-10-12',
           snapshot: null,
-          done: true,
+          done: false,
         },
       },
       '',
@@ -124,7 +124,7 @@ describe('EditTodoComponent', () => {
   });
 
   it('form valid when no changes', () => {
-    expect(component.newTodos.valid).toBeTruthy();
+    expect(component.newTodos.invalid).toBeFalsy();
   });
 
   it('invalid if change into past date', () => {
