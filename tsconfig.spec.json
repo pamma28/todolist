@@ -5,5 +5,10 @@
     "types": ["jasmine", "node"]
   },
   "files": ["src/test.ts", "src/polyfills.ts"],
-  "include": ["src/app/app.component.spec.ts", "src/app/add-todo/*.spec.ts","src/app/auth/*.spec.ts"]
+  "include": [
+    "src/app/app.component.spec.ts",
+    "src/app/add-todo/*.spec.ts",
+    "src/app/auth/*.spec.ts",
+    "src/app/todo-list/*.spec.ts"
+  ]
 }

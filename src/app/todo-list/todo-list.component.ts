@@ -7,7 +7,7 @@ import {
   animate,
   keyframes,
 } from '@angular/animations';
-import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 

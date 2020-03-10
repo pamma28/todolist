@@ -28,7 +28,7 @@ describe('AddTodoComponent', () => {
     restServices.addTodo.and.returnValue(of(true));
     window.history.pushState({ todo: null }, '', '');
     TestBed.configureTestingModule({
-      imports: [AppModule, MaterialModule, ReactiveFormsModule],
+      imports: [AppModule],
       declarations: [AddTodoComponent, NavbarComponent],
       providers: [
         { provide: StaticServices, useValue: staticServices },
