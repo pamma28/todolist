@@ -1,0 +1,16 @@
+.info {
+  background-color: limegreen;
+  color: white;
+}
+
+.danger {
+  background-color: orangered;
+  color: white;
+}
+.close-button {
+  position: fixed !important;
+  top: initial;
+  right: 5%;
+  margin-top: -15px;
+  color: black;
+}

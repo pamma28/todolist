@@ -7,6 +7,7 @@
     <mat-error
       *ngIf="
         newTodos.get('description').invalid &&
+        newTodos.get('description').touched &&
         newTodos.get('description').hasError('required')
       "
     >

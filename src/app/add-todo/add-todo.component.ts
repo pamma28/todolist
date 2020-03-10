@@ -69,12 +69,12 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     } else {
       // default add
       this.newTodos = new FormGroup({
-        description: new FormControl('', [
+        description: new FormControl(null, [
           Validators.required,
           Validators.minLength(5),
           Validators.maxLength(30),
         ]),
-        deadline: new FormControl('', [Validators.required, this.allowedDates]),
+        deadline: new FormControl(null, [Validators.required, this.allowedDates]),
         snapshot: new FormControl(null, [], []),
         done: new FormControl('', []),
         id: new FormControl(''),
@@ -137,6 +137,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               type: 'success',
               message: 'Todos has been saved',
             };
+            this.newTodos.updateValueAndValidity();
             this.newTodos.reset();
             this.dataSaved = true;
             // newId broadcast to observable
