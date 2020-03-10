@@ -1,11 +1,13 @@
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { of } from 'rxjs';
 
 import { AddTodoComponent } from './add-todo.component';
 import { StaticServices } from '../services/static-data.service';
 import { NavbarComponent } from '../navbar/navbar.component';
-import { of } from 'rxjs';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { AppModule } from '../app.module';
+import { RestTodoService } from '../services/rest-todo.service';
+import { MaterialModule } from '../material.module';
 
 describe('AddTodoComponent', () => {
   let component: AddTodoComponent;
@@ -18,12 +20,19 @@ describe('AddTodoComponent', () => {
       'addNewDataList',
     ]);
     todoList = staticServices.postData.and.returnValue(of(todoList));
+    const restServices = jasmine.createSpyObj('RestTodoService', [
+      'addTodo',
+      'patchTodo',
+      'completedTodo',
+    ]);
+    restServices.addTodo.and.returnValue(of(true));
     window.history.pushState({ todo: null }, '', '');
     TestBed.configureTestingModule({
-      imports: [AppModule, ReactiveFormsModule],
+      imports: [AppModule, MaterialModule, ReactiveFormsModule],
       declarations: [AddTodoComponent, NavbarComponent],
       providers: [
         { provide: StaticServices, useValue: staticServices },
+        { provide: RestTodoService, useValue: restServices },
         { provide: ReactiveFormsModule, useValue: formBuilder },
       ],
     }).compileComponents();
@@ -42,7 +51,7 @@ describe('AddTodoComponent', () => {
   it('invalid past date', () => {
     component.newTodos.setValue({
       description: null,
-      screenshot: null,
+      snapshot: null,
       deadline: '2020-02-20',
       done: false,
       id: null,
@@ -53,7 +62,7 @@ describe('AddTodoComponent', () => {
   it('valid todo creation', () => {
     component.newTodos.setValue({
       description: 'test with jasmine karma',
-      screenshot: null,
+      snapshot: null,
       deadline: '2021-02-20',
       done: false,
       id: null,
@@ -76,9 +85,10 @@ describe('EditTodoComponent', () => {
       {
         todo: {
           id: 11,
-          description: 'this is description',
-          deadline: '2020-03-22',
-          done: false,
+          description: 'hello world',
+          deadline: '2022-10-12',
+          snapshot: null,
+          done: true,
         },
       },
       '',
@@ -89,11 +99,19 @@ describe('EditTodoComponent', () => {
       'updateData',
     ]);
     todoList = staticServices.updateData.and.returnValue(of(todoList));
+    const restServices = jasmine.createSpyObj('RestTodoService', [
+      'addTodo',
+      'patchTodo',
+      'completedTodo',
+    ]);
+    restServices.patchTodo.and.returnValue(of(true));
+    restServices.completedTodo.and.returnValue(of(true));
     TestBed.configureTestingModule({
-      imports: [AppModule, ReactiveFormsModule],
+      imports: [AppModule, MaterialModule, ReactiveFormsModule],
       declarations: [AddTodoComponent, NavbarComponent],
       providers: [
         { provide: StaticServices, useValue: staticServices },
+        { provide: RestTodoService, useValue: restServices },
         { provide: ReactiveFormsModule, useValue: formBuilder },
       ],
     }).compileComponents();
@@ -112,7 +130,7 @@ describe('EditTodoComponent', () => {
   it('invalid if change into past date', () => {
     component.newTodos.setValue({
       description: window.history.state.todo.description,
-      screenshot: null,
+      snapshot: null,
       deadline: '2020-02-20',
       done: window.history.state.todo.done,
       id: window.history.state.todo.id,
@@ -123,7 +141,7 @@ describe('EditTodoComponent', () => {
   it('valid todo update', () => {
     component.newTodos.setValue({
       description: window.history.state.todo.description + ' update',
-      screenshot: null,
+      snapshot: null,
       deadline: window.history.state.todo.deadline,
       done: window.history.state.todo.done,
       id: window.history.state.todo.id,

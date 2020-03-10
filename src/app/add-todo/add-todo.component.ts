@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import * as moment from 'moment';
+
 import { StaticServices } from './../services/static-data.service';
 import { InstanceTodo } from './../todo-list/todo.interface';
-import * as moment from 'moment';
 import { CanComponentDeactivate } from './can-deactivate-guard.interface';
-import { Observable, Observer } from 'rxjs';
 import { RestTodoService } from '../services/rest-todo.service';
 import { MimeValidators } from './mime-type.validator';
 
@@ -74,7 +75,10 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
           Validators.minLength(5),
           Validators.maxLength(30),
         ]),
-        deadline: new FormControl(null, [Validators.required, this.allowedDates]),
+        deadline: new FormControl(null, [
+          Validators.required,
+          this.allowedDates,
+        ]),
         snapshot: new FormControl(null, [], []),
         done: new FormControl('', []),
         id: new FormControl(''),
