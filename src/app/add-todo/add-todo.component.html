@@ -1,6 +1,11 @@
 <app-alert-notif [notification]="notification"></app-alert-notif>
 <h3>What's more next?</h3>
-<form [formGroup]="newTodos" (ngSubmit)="onSubmit()" fxLayout="column">
+<form
+  [formGroup]="newTodos"
+  (ngSubmit)="onSubmit(formDirective)"
+  fxLayout="column"
+  #formDirective="ngForm"
+>
   <mat-form-field>
     <mat-label>Detailing, sometimes useful:</mat-label>
     <textarea matInput formControlName="description" rows="3"></textarea>

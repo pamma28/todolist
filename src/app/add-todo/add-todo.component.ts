@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators, NgForm, FormGroupDirective } from '@angular/forms';
 import { Observable } from 'rxjs';
 import * as moment from 'moment';
 
@@ -86,7 +86,7 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
     }
   }
 
-  onSubmit() {
+  onSubmit(formDirective?: FormGroupDirective) {
     const dt = this.newTodos.value;
     if (dt.id) {
       // check done and image attachment
@@ -141,8 +141,8 @@ export class AddTodoComponent implements OnInit, CanComponentDeactivate {
               type: 'success',
               message: 'Todos has been saved',
             };
-            this.newTodos.updateValueAndValidity();
             this.newTodos.reset();
+            formDirective.resetForm();
             this.dataSaved = true;
             // newId broadcast to observable
             this.onSuccessAddition(responseData.id);
